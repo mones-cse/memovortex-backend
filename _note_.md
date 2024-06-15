@@ -1,0 +1,6 @@
+-   [x] express setup
+-   [x] husky setup
+-   [x] prettier setup
+-   [x] zod setup
+-   [x] env
+-   [ ] lint-staged setup
