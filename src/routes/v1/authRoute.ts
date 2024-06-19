@@ -1,13 +1,15 @@
 import express from 'express'
+import validateData from '../../middleware/validationMiddleware'
+import { userSignupSchema } from '../../validations/auth.validation'
+import authController from '../../contollers/auth.controller'
 const router = express.Router()
 
 router.use((req, res, next) => {
     console.log('Auth middleware')
     next()
 })
-router.post('/register', (req, res) => {
-    res.send('Register page post method')
-})
+
+router.post('/register', validateData(userSignupSchema), authController.signup)
 
 router.post('/login', (req, res) => {
     res.send('Login page post method')
