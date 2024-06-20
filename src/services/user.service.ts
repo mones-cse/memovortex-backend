@@ -1,6 +1,6 @@
 import { Request } from 'express'
 import { DB_ERRORS, DatabaseError, TNewUser } from '../config/database'
-import { createUser } from '../repository/user'
+import { createUser } from '../repositories/user'
 
 export const createUserService = async (user: TNewUser) => {
     const hashedPassword = user.password_hash

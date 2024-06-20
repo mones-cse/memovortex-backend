@@ -1,27 +1,26 @@
 import displayRoutes from 'express-routemap'
-import express, { Request, Response } from 'express'
 import env from './config/.env'
-import { routerv1 } from './routes/index'
-
-// import { validateData } from './middleware/validationMiddleware'
-// import { userSignupSchema } from './validations/auth.validation'
-
-const app = express()
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+import app from './app'
+import { client } from './config/database'
 const port = env.PORT
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Express + TypeScript Server')
-})
+const startServer = async () => {
+    try {
+        await client
+            .connect()
+            .then(() => {
+                console.log('Connected to database')
+                app.listen(port, () => {
+                    displayRoutes(app)
+                    console.log(`[server]: Server is running at http://localhost:${port}`)
+                })
+            })
+            .catch((error) => {
+                console.log('Error connecting to database: ', error)
+            })
+    } catch (error) {
+        console.log('Error connecting to database: ', error)
+    }
+}
 
-// app.post('/test', validateData(userSignupSchema), (req: Request, res: Response) => {
-//     res.json({ message: 'User registered successfully', data: req.body })
-// })
-
-app.use('/v1', routerv1)
-
-app.listen(port, () => {
-    displayRoutes(app)
-    console.log(`[server]: Server is running at http://localhost:${port}`)
-})
+startServer()

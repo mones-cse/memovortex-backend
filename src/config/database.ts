@@ -29,12 +29,10 @@ let db: ReturnType<typeof drizzle>
 
 const initializeDatabase = async () => {
     try {
-        await client.connect()
         db = drizzle(client, {
             schema,
             logger: true,
         })
-        console.log('Database connection established and drizzle initialized.')
     } catch (error) {
         console.error('Failed to connect to the database:', error)
     }
