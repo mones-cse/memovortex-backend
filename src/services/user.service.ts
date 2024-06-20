@@ -1,9 +1,11 @@
 import { Request } from 'express'
 import { DB_ERRORS, DatabaseError, TNewUser } from '../config/database'
 import { createUser } from '../repositories/user'
+import { passowrdGenerator } from '../utils/bcrypt'
 
 export const createUserService = async (user: TNewUser) => {
-    const hashedPassword = user.password_hash
+    const hashedPassword = await passowrdGenerator(user.password_hash)
+
     try {
         const res_service = await createUser({ ...user, password_hash: hashedPassword })
         console.log('User created successfully', res_service)
