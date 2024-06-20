@@ -1,8 +1,8 @@
 import { Request } from 'express'
 import { DB_ERRORS, DatabaseError, TNewUser } from '../config/database'
-import { createUser } from '../repositories/user'
-import { passowrdGenerator } from '../utils/bcrypt'
-
+import { createUser, getUserByEmail } from '../repositories/user.repository'
+import { passowrdGenerator, passwordCompare } from '../utils/bcrypt'
+import { tokenService } from './index'
 export const createUserService = async (user: TNewUser) => {
     const hashedPassword = await passowrdGenerator(user.password_hash)
 
@@ -11,7 +11,6 @@ export const createUserService = async (user: TNewUser) => {
         console.log('User created successfully', res_service)
         return res_service
     } catch (err) {
-        console.log('fuck')
         const e = err as DatabaseError
         if (e.code === DB_ERRORS.UNIQUE_VIOLATION) {
             throw new Error('Unique constraint violation: Duplicate entry.')
@@ -24,5 +23,19 @@ export const createUserService = async (user: TNewUser) => {
         } else {
             throw new Error('Some other database error occurred.')
         }
+    }
+}
+
+export const loginUserService = async (email: string, password: string) => {
+    const [user] = await getUserByEmail(email)
+    if (!user) {
+        throw new Error('Email not found')
+    }
+    const isMatch = await passwordCompare(password, user.password_hash)
+    if (!isMatch) {
+        throw new Error('Credentials not match')
+    } else {
+        const token = await tokenService.issueJWT(user)
+        return token
     }
 }

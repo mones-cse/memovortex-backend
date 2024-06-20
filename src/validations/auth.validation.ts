@@ -7,3 +7,8 @@ export const userSignupSchema = createInsertSchema(UserTable, {
     email: z.string().email(),
     password_hash: z.string().min(6).max(50),
 })
+
+export const userLoginSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6).max(50),
+})

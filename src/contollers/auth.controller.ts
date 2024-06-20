@@ -11,6 +11,17 @@ const signup = catchAsync(async (req: Request, res: Response) => {
         res.status(400).json({ message: err.message })
     }
 })
+
+const login = catchAsync(async (req: Request, res: Response) => {
+    try {
+        const { email, password } = req.body
+        const tokens = await userService.loginUserService(email, password)
+        res.status(200).json({ message: 'User logged in successfully', tokens })
+    } catch (err: any) {
+        res.status(400).json({ message: err.message })
+    }
+})
 export default {
     signup,
+    login,
 }

@@ -1,6 +1,6 @@
 import express from 'express'
 import validateData from '../../middlewares/validationMiddleware'
-import { userSignupSchema } from '../../validations/auth.validation'
+import { userSignupSchema, userLoginSchema } from '../../validations/auth.validation'
 import authController from '../../contollers/auth.controller'
 const router = express.Router()
 
@@ -11,9 +11,7 @@ router.use((req, res, next) => {
 
 router.post('/register', validateData(userSignupSchema), authController.signup)
 
-router.post('/login', (req, res) => {
-    res.send('Login page post method')
-})
+router.post('/login', validateData(userLoginSchema), authController.login)
 
 router.post('/refresh-token', (req, res) => {
     res.send('Refresh token page post method')
