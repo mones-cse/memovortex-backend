@@ -1,7 +1,10 @@
+import passport from 'passport'
 import displayRoutes from 'express-routemap'
-import env from './config/.env'
+import env from './config/env'
 import app from './app'
 import { client } from './config/database'
+import strategy from './config/passport'
+
 const port = env.PORT
 
 const startServer = async () => {
@@ -10,6 +13,7 @@ const startServer = async () => {
             .connect()
             .then(() => {
                 console.log('Connected to database')
+                passport.use(strategy)
                 app.listen(port, () => {
                     displayRoutes(app)
                     console.log(`[server]: Server is running at http://localhost:${port}`)

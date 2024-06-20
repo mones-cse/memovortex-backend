@@ -1,4 +1,5 @@
 import express from 'express'
+import isAuthentic from '../../middlewares/isAuthentic'
 const router = express.Router()
 
 router.use((req, res, next) => {
@@ -12,6 +13,9 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
     res.send('list of all user get method')
 })
+router.get('/protected', isAuthentic, (req, res) => {
+    res.send('Protected page')
+})
 
 router.get('/:userId', (req, res) => {
     res.send('get a user by id get method')
@@ -23,10 +27,6 @@ router.patch('/:userId', (req, res) => {
 
 router.delete('/:userId', (req, res) => {
     res.send(' get a user by id delete method')
-})
-
-router.get('/protected', (req, res) => {
-    res.send('Protected page')
 })
 
 export default router
