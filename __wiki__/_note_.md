@@ -7,8 +7,8 @@
 -   [x] lint-staged setup
 -   [x] route setup
 
--   [ ] setup a database with docker
--   [ ] setup drizzle orm
--   [ ] drizzle-kit studio
+-   [x] setup a database with docker
+-   [x] setup drizzle orm
+-   [x] drizzle-kit studio
 -   [ ] setup logger
 -   [ ] error handling middleware
