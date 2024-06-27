@@ -5,6 +5,5 @@ export const passowrdGenerator = (password: string) => {
 }
 
 export const passwordCompare = (password: string, hash_password: string) => {
-    console.log(password, hash_password)
     return bcrypt.compare(password, hash_password)
 }

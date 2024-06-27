@@ -10,5 +10,15 @@
 -   [x] setup a database with docker
 -   [x] setup drizzle orm
 -   [x] drizzle-kit studio
--   [ ] setup logger
--   [ ] error handling middleware
+-   [ ] es lint setup
+-   [ ] error handling middleware : centralized error handling mechanism
+-   [ ] setup eslint
+-   [ ] logging with winsotn or morgan
+-   [ ] setup swagger
+-   [ ] setup tests with jest
+-   [ ] setup Security: set security HTTP headers using helmet
+-   [ ] CORS: Cross-Origin Resource-Sharing enabled using cors
+-   [ ] Code coverage: using coveralls
+-   [ ] Code quality: with Codacy
+
+-   [ ] send email verification
