@@ -4,6 +4,7 @@ import { createUser, getUserByEmail } from '../repositories/user.repository'
 import { passowrdGenerator, passwordCompare } from '../utils/bcrypt'
 import { tokenService } from './index'
 import ApiError from '../errors/ApiError'
+import { serializeUser } from '../serializers/userSerializer'
 
 export const createUserService = async (user: TNewUser) => {
     const existingUser = await getUserByEmail(user.email)
@@ -13,7 +14,8 @@ export const createUserService = async (user: TNewUser) => {
 
     const hashedPassword = await passowrdGenerator(user.password_hash)
     const createtdUser = await createUser({ ...user, password_hash: hashedPassword })
-    return createtdUser
+    const serializedUser = serializeUser(createtdUser[0])
+    return serializedUser
 }
 
 export const loginUserService = async (email: string, password: string) => {
