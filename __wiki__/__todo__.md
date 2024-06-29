@@ -4,12 +4,13 @@
     -   [x] if user is registered
         -   [x] check if password is correct
         -   [x] if password is correct
-            -   [ ] generate token
-            -   [ ] generate refresh token
-            -   [ ] create refresh token api
-            -   [ ] create refresh token schema
-            -   [ ] save refresh token in database
+            -   [x] generate token
+            -   [x] generate refresh token
+            -   [x] create refresh token schema
+            -   [x] save refresh token in database
+            -   [x] prevent duplicate session entry
             -   [x] return user data
+            -   [ ] create refresh token api
         -   [x] if password is incorrect
             -   [x] return error message
     -   [x] if user is not registered
