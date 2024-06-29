@@ -8,6 +8,20 @@
             "when": 1718827668866,
             "tag": "0000_boring_bug",
             "breakpoints": true
+        },
+        {
+            "idx": 1,
+            "version": "7",
+            "when": 1719626680664,
+            "tag": "0001_dapper_purifiers",
+            "breakpoints": true
+        },
+        {
+            "idx": 2,
+            "version": "7",
+            "when": 1719630901650,
+            "tag": "0002_blue_marvel_boy",
+            "breakpoints": true
         }
     ]
 }

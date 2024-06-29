@@ -10,3 +10,14 @@ export const UserTable = pgTable('user', {
     created_at: timestamp('created_at').defaultNow(),
     updated_at: timestamp('updated_at').defaultNow(),
 })
+
+export const SessionTable = pgTable('session', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    user_id: uuid('user_id')
+        .notNull()
+        .references(() => UserTable.id),
+    refresh_token: varchar('refresh_token', { length: 128 }).notNull().unique(),
+    expires_at: timestamp('expires_at').notNull(),
+    created_at: timestamp('created_at').defaultNow(),
+    updated_at: timestamp('updated_at').defaultNow(),
+})

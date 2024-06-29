@@ -1,0 +1,1 @@
+ALTER TABLE "session" ALTER COLUMN "refresh_token" SET DATA TYPE varchar(128);
