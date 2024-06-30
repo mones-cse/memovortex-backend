@@ -4,10 +4,11 @@ import env from '../config/env'
 import crypto from 'crypto'
 
 export const issueJWT = async (user: TUser) => {
-    const expiresIn = '100m' // 1000ms * 60s * 60m * 24h  = 1 days
-    console.log('during jwt issue time is ', Date.now())
+    const expiresIn = '10s' // 1000ms * 60s * 60m * 24h  = 1 days
+
     const payload = {
         sub: user.id,
+        email: user.email,
         iat: Math.floor(Date.now() / 1000),
     }
     const signedToken = await jwt.sign(payload, env.PRIVATE_KEY, {

@@ -21,7 +21,19 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         next(err)
     }
 }
+
+const newAccessTokenByRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { refresh_token } = req.body
+
+        const tokens = await authService.newAccessTokenByRefreshToken(refresh_token)
+        successResponse(res, 200, 'New access token created successfully', tokens)
+    } catch (err: any) {
+        next(err)
+    }
+}
 export default {
     signup,
     login,
+    newAccessTokenByRefreshToken,
 }

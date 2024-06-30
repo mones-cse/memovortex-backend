@@ -13,9 +13,7 @@ router.post('/register', validateData(userSignupSchema), authController.signup)
 
 router.post('/login', validateData(userLoginSchema), authController.login)
 
-router.post('/refresh-token', (req, res) => {
-    res.send('Refresh token page post method')
-})
+router.post('/refresh-token', authController.newAccessTokenByRefreshToken)
 
 router.post('/forgot-password', (req, res) => {
     res.send('Forgot password page post method')

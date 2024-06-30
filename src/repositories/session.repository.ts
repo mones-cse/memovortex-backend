@@ -1,4 +1,4 @@
-import { SessionTable } from '../schemas/schemas'
+import { SessionTable } from './../schemas/schemas'
 import { TInsertSession } from 'types/session.types'
 import { db } from '../config/database'
 import { eq } from 'drizzle-orm'

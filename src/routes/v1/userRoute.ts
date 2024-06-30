@@ -16,6 +16,10 @@ router.get('/', (req, res) => {
 router.get('/protected', isAuthentic, (req, res) => {
     res.send('Protected page')
 })
+router.get('/me', isAuthentic, (req, res) => {
+    console.log({ res })
+    res.send('get a user by id get method')
+})
 
 router.get('/:userId', (req, res) => {
     res.send('get a user by id get method')

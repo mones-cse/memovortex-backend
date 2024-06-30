@@ -1,5 +1,5 @@
-import { getUserByEmail } from '../repositories/user.repository'
-import { createSession, deleteSessionByUserId } from '../repositories/session.repository'
+import { getUserByEmail, getUserById } from '../repositories/user.repository'
+import { createSession, deleteSessionByUserId, getSessionByRefreshtoken } from '../repositories/session.repository'
 import { passwordCompare } from '../utils/bcrypt'
 import { tokenService } from './index'
 import ApiError from '../errors/ApiError'
@@ -31,4 +31,17 @@ export const loginUserService = async (email: string, password: string) => {
         }
         return { token, refresh_token }
     }
+}
+
+export const newAccessTokenByRefreshToken = async (refresh_token: string) => {
+    const session = await getSessionByRefreshtoken(refresh_token)
+    if (session.length === 0) {
+        throw new ApiError(404, 'Session not found')
+    }
+    const user = await getUserById(session[0].user_id as string)
+    if (!user) {
+        throw new ApiError(404, 'User not found')
+    }
+    const newAccessToken = await tokenService.issueJWT(user[0])
+    return newAccessToken
 }
