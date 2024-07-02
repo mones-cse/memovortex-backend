@@ -1,7 +1,8 @@
 import express from 'express'
 import validateData from '../../middlewares/validationMiddleware'
-import { userSignupSchema, userLoginSchema } from '../../validations/auth.validation'
+import { userSignupSchema, userLoginSchema, changePsswrodSchema } from '../../validations/auth.validation'
 import authController from '../../contollers/auth.controller'
+import isAuthentic from '../../middlewares/isAuthentic'
 const router = express.Router()
 
 router.use((req, res, next) => {
@@ -19,9 +20,7 @@ router.post('/forgot-password', (req, res) => {
     res.send('Forgot password page post method')
 })
 
-router.post('/reset-password', (req, res) => {
-    res.send('Reset password page post method')
-})
+router.post('/change-password', validateData(changePsswrodSchema), isAuthentic, authController.changePassword)
 
 router.post('/send-verification-email', (req, res) => {
     res.send('Send verification page post method')

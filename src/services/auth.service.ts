@@ -1,9 +1,11 @@
+import { changePassword } from './../repositories/user.repository'
 import { getUserByEmail, getUserById } from '../repositories/user.repository'
 import { createSession, deleteSessionByUserId, getSessionByRefreshtoken } from '../repositories/session.repository'
-import { passwordCompare } from '../utils/bcrypt'
+import { passowrdGenerator, passwordCompare } from '../utils/bcrypt'
 import { tokenService } from './index'
 import ApiError from '../errors/ApiError'
 import { TInsertSession } from 'types/session.types'
+import { TUser } from 'config/database'
 
 export const loginUserService = async (email: string, password: string) => {
     const [user] = await getUserByEmail(email)
@@ -22,7 +24,6 @@ export const loginUserService = async (email: string, password: string) => {
                 refresh_token: refresh_token,
                 expires_at: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
             }
-            console.log('🚀 ~ loginUserService ~ session:', session)
             await deleteSessionByUserId(user.id)
             await createSession(session)
         } catch (e) {
@@ -44,4 +45,17 @@ export const newAccessTokenByRefreshToken = async (refresh_token: string) => {
     }
     const newAccessToken = await tokenService.issueJWT(user[0])
     return newAccessToken
+}
+
+export const changePasswordService = async (user: TUser, newPassword: string, oldPassword: string) => {
+    // check old password
+    const isMatch = await passwordCompare(oldPassword, user.password_hash)
+    if (!isMatch) {
+        throw new ApiError(404, 'Old password not match')
+    }
+    // generate new hash password
+    const newHashPassword = await passowrdGenerator(newPassword)
+    // update password
+    const result = await changePassword(user.id, newHashPassword)
+    return result
 }

@@ -6,8 +6,6 @@ import ApiError from '../errors/ApiError'
 
 export default function validateData(schema: z.ZodObject<any, any>) {
     return (req: Request, res: Response, next: NextFunction) => {
-        console.log('🚀 ~ return ~ req:', req.headers)
-
         try {
             schema.parse(req.body)
             next()

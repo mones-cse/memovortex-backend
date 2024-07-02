@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { userService, authService } from '../services/index'
 import { successResponse } from '../utils/response'
+import { TUser } from 'config/database'
+import { changePasswordService } from '../services/auth.service'
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -32,8 +34,22 @@ const newAccessTokenByRefreshToken = async (req: Request, res: Response, next: N
         next(err)
     }
 }
+
+const changePassword = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user
+        const newPassword = req.body.newPassword
+        const oldPassword = req.body.oldPassword
+        const response = await changePasswordService(user as TUser, newPassword, oldPassword)
+        successResponse(res, 200, 'Password changed successfully')
+    } catch (err: any) {
+        console.log('🚀 ~ changePassword ~ err:', err)
+        next(err)
+    }
+}
 export default {
     signup,
     login,
+    changePassword,
     newAccessTokenByRefreshToken,
 }

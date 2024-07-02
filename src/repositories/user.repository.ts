@@ -25,3 +25,10 @@ export const deleteUser = async (id: string) => {
 export const updateUser = async (id: string, user: TNewUser) => {
     return await db.update(UserTable).set(user).where(eq(UserTable.id, id))
 }
+
+export const changePassword = async (userId: string, hashPassword: string) => {
+    return await db
+        .update(UserTable)
+        .set({ password_hash: hashPassword, updated_at: new Date() })
+        .where(eq(UserTable.id, userId))
+}
