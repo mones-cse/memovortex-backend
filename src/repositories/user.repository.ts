@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm'
 import { TNewUser, db } from '../config/database'
 import { UserTable } from '../schemas/schemas'
+import { UserAccountInfo } from '../types/user.types'
 
 export const createUser = async (user: TNewUser) => {
     return await db.insert(UserTable).values(user).returning()
@@ -22,8 +23,14 @@ export const deleteUser = async (id: string) => {
     return await db.delete(UserTable).where(eq(UserTable.id, id))
 }
 
-export const updateUser = async (id: string, user: TNewUser) => {
-    return await db.update(UserTable).set(user).where(eq(UserTable.id, id))
+export const updateUser = async (id: string, data: UserAccountInfo) => {
+    return await db
+        .update(UserTable)
+        .set({
+            full_name: data.full_name,
+            updated_at: new Date(),
+        })
+        .where(eq(UserTable.id, id))
 }
 
 export const changePassword = async (userId: string, hashPassword: string) => {

@@ -19,7 +19,6 @@ const strategy = new Strategy(options, (payload, done) => {
         .getUserById(payload.sub)
         .then((user) => {
             if (user) {
-                console.log({ user })
                 return done(null, user)
             } else {
                 return done(null, false)

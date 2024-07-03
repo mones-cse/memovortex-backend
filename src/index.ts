@@ -1,3 +1,4 @@
+import 'module-alias/register'
 import passport from 'passport'
 import displayRoutes from 'express-routemap'
 import env from './config/env'

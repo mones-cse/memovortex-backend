@@ -4,8 +4,8 @@ import { createSession, deleteSessionByUserId, getSessionByRefreshtoken } from '
 import { passowrdGenerator, passwordCompare } from '../utils/bcrypt'
 import { tokenService } from './index'
 import ApiError from '../errors/ApiError'
-import { TInsertSession } from 'types/session.types'
-import { TUser } from 'config/database'
+import { TInsertSession } from '@src/types/session.types'
+import { TUser } from '@src/config/database'
 
 export const loginUserService = async (email: string, password: string) => {
     const [user] = await getUserByEmail(email)

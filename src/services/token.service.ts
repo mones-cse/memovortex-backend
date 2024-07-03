@@ -1,4 +1,4 @@
-import { TUser } from 'config/database'
+import { TUser } from '@src/config/database'
 import jwt from 'jsonwebtoken'
 import env from '../config/env'
 import crypto from 'crypto'
