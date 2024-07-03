@@ -22,3 +22,7 @@
 -   [ ] Code quality: with Codacy
 
 -   [ ] send email verification
+-   [ ] add expire time on refresh token
+-   [ ] remove refresh token from db on logout
+-   [ ] remove refresh token from db on password change
+-   [ ] remove refresh token when expire

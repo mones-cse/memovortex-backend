@@ -9,6 +9,7 @@ export const issueJWT = async (user: TUser) => {
     const payload = {
         sub: user.id,
         email: user.email,
+        full_name: user.full_name,
         iat: Math.floor(Date.now() / 1000),
     }
     const signedToken = await jwt.sign(payload, env.PRIVATE_KEY, {
