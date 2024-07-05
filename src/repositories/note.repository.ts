@@ -1,7 +1,7 @@
-import { eq, and } from 'drizzle-orm'
+import { eq, and, desc } from 'drizzle-orm'
 import { TUser, db } from '../config/database'
 import { NoteTable } from '../schemas/schemas'
-import { TInsertNote } from '../types/note.types'
+import { TInsertNote, TUpdateNote } from '../types/note.types'
 const noteSerializer = {
     id: NoteTable.id,
     noteTitle: NoteTable.noteTitle,
@@ -20,10 +20,14 @@ export const removeNote = async (id: string) => {
 }
 
 export const getNotes = async (user: TUser) => {
-    return await db.select(noteSerializer).from(NoteTable).where(eq(NoteTable.createdBy, user.id))
+    return await db
+        .select(noteSerializer)
+        .from(NoteTable)
+        .where(eq(NoteTable.createdBy, user.id))
+        .orderBy(desc(NoteTable.updatedAt))
 }
 
-export const updateNotes = async (noteId: string, userId: string, note: TInsertNote) => {
+export const updateNotes = async (noteId: string, userId: string, note: TUpdateNote) => {
     return await db
         .update(NoteTable)
         .set(note)

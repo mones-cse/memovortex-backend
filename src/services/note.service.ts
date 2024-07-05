@@ -1,3 +1,4 @@
+import { TUpdateNote } from '@src/types/note.types'
 import { createNote, removeNote, getNotes, updateNotes } from '../repositories/note.repository'
 
 export const createNoteService = async (user: any, data: any) => {
@@ -16,9 +17,8 @@ export const getNotesService = async (user: any) => {
     return response
 }
 
-export const updateNotesService = async (noteId: string, userId: string, data: any) => {
+export const updateNotesService = async (noteId: string, userId: string, data: TUpdateNote) => {
     const updatedAt = new Date()
-
-    const response = await updateNotes(noteId, userId, { ...data, updated_at: updatedAt })
+    const response = await updateNotes(noteId, userId, { ...data, updatedAt })
     return response
 }

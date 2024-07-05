@@ -8,3 +8,5 @@ const InsertNoteSchema = createInsertSchema(NoteTable)
 
 export type TNote = z.infer<typeof SelectedNoteScheam>
 export type TInsertNote = z.infer<typeof InsertNoteSchema>
+
+export type TUpdateNote = Partial<Omit<TInsertNote, 'id'>> & { id: string }
