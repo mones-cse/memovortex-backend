@@ -1,7 +1,7 @@
 import { createNote, removeNote, getNotes, updateNotes } from '../repositories/note.repository'
 
 export const createNoteService = async (user: any, data: any) => {
-    const note = { ...data, created_by: user.id }
+    const note = { ...data, createdBy: user.id }
     const response = await createNote(note)
     return response
 }
