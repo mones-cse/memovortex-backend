@@ -6,3 +6,5 @@ export const noteCreateSchema = z.object({
     is_note_favourite: z.boolean(),
     note_bg_color: z.string().max(50),
 })
+
+export const noteUpdateSchema = noteCreateSchema.partial()

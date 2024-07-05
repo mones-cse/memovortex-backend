@@ -1,4 +1,4 @@
-import { createNote, removeNote } from '../repositories/note.repository'
+import { createNote, removeNote, getNotes, updateNotes } from '../repositories/note.repository'
 
 export const createNoteService = async (user: any, data: any) => {
     const note = { ...data, created_by: user.id }
@@ -8,5 +8,17 @@ export const createNoteService = async (user: any, data: any) => {
 
 export const removeNoteService = async (id: string) => {
     const response = await removeNote(id)
+    return response
+}
+
+export const getNotesService = async (user: any) => {
+    const response = await getNotes(user)
+    return response
+}
+
+export const updateNotesService = async (noteId: string, userId: string, data: any) => {
+    const updatedAt = new Date()
+
+    const response = await updateNotes(noteId, userId, { ...data, updated_at: updatedAt })
     return response
 }
