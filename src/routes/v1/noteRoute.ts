@@ -14,5 +14,6 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', isAuthentic, validateData(noteCreateSchema), noteController.createNote)
+router.delete('/:id', isAuthentic, noteController.removeNote)
 
 export default router
