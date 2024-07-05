@@ -29,6 +29,13 @@
             "when": 1720157937274,
             "tag": "0003_light_lady_deathstrike",
             "breakpoints": true
+        },
+        {
+            "idx": 4,
+            "version": "7",
+            "when": 1720158582463,
+            "tag": "0004_amused_sleeper",
+            "breakpoints": true
         }
     ]
 }

@@ -26,8 +26,8 @@ export const NoteTable = pgTable('note', {
     id: uuid('id').primaryKey().defaultRandom(),
     note_title: varchar('note_title', { length: 100 }).notNull(),
     note_content: text('note_content').notNull(),
-    is_note_favorite: boolean('is_note_favorite').default(false),
-    note_bg_color: varchar('note_bg_color', { length: 50 }).default('#ffffff'),
+    is_note_favourite: boolean('is_note_favourite').default(false),
+    note_bg_color: varchar('note_bg_color', { length: 50 }).default('#FFFFFF'),
     created_by: uuid('created_by')
         .notNull()
         .references(() => UserTable.id),
