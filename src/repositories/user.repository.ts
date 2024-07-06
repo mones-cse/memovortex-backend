@@ -27,7 +27,7 @@ export const updateUser = async (id: string, data: UserAccountInfo) => {
     return await db
         .update(UserTable)
         .set({
-            fullName: data.full_name,
+            fullName: data.fullName,
             updatedAt: new Date(),
         })
         .where(eq(UserTable.id, id))

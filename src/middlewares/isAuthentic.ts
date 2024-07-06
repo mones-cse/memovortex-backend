@@ -9,7 +9,6 @@ const isAuthentic = (req: Request, res: Response, next: any) => {
         // console.log({ err, user })
         if (err || !user) {
             throw new ApiError(401, 'Unauthorized')
-            return res.status(401).send({ message: 'Unauthorized', error: err })
         }
         req.user = user[0]
         next()
