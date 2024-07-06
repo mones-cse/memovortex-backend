@@ -1,11 +1,7 @@
-import { Request } from 'express'
-import { DB_ERRORS, DatabaseError, TNewUser } from '../config/database'
+import { TNewUser } from '../config/database'
 import { createUser, getUserByEmail, updateUser } from '../repositories/user.repository'
-import { createSession } from '../repositories/session.repository'
-import { passowrdGenerator, passwordCompare } from '../utils/bcrypt'
-import { tokenService } from './index'
+import { passowrdGenerator } from '../utils/bcrypt'
 import ApiError from '../errors/ApiError'
-import { TInsertSession } from '@src/types/session.types'
 import { serializeUser } from '../serializers/userSerializer'
 import { TUser } from '@src/config/database'
 import { UserAccountInfo } from '@src/types/user.types'
@@ -23,6 +19,7 @@ export const createUserService = async (user: TNewUser) => {
 }
 
 export const updateUserAcountInfoService = async (user: TUser, data: UserAccountInfo) => {
-    const response = await updateUser(user.id, data)
-    return
+    const updatedUser = await updateUser(user.id, data)
+    const serializedUser = serializeUser(updatedUser[0])
+    return serializedUser
 }

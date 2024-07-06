@@ -31,6 +31,7 @@ export const updateUser = async (id: string, data: UserAccountInfo) => {
             updatedAt: new Date(),
         })
         .where(eq(UserTable.id, id))
+        .returning()
 }
 
 export const changePassword = async (userId: string, hashPassword: string) => {
