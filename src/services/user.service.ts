@@ -16,8 +16,8 @@ export const createUserService = async (user: TNewUser) => {
         throw new ApiError(409, 'Email already exists')
     }
 
-    const hashedPassword = await passowrdGenerator(user.password_hash)
-    const createtdUser = await createUser({ ...user, password_hash: hashedPassword })
+    const hashedPassword = await passowrdGenerator(user.password)
+    const createtdUser = await createUser({ ...user, password: hashedPassword })
     const serializedUser = serializeUser(createtdUser[0])
     return serializedUser
 }

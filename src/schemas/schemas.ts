@@ -3,12 +3,12 @@ import { sql } from 'drizzle-orm'
 export const UserTable = pgTable('user', {
     id: uuid('id').primaryKey().defaultRandom(),
     email: varchar('email', { length: 100 }).notNull().unique(),
-    full_name: varchar('full_name', { length: 50 }).notNull(),
-    password_hash: varchar('password_hash', { length: 65 }).notNull(),
-    is_active: boolean('is_active').default(false),
-    is_verified: boolean('is_verified').default(false),
-    created_at: timestamp('created_at').defaultNow(),
-    updated_at: timestamp('updated_at').defaultNow(),
+    fullName: varchar('full_name', { length: 50 }).notNull(),
+    password: varchar('password', { length: 65 }).notNull(),
+    isActive: boolean('is_active').default(false),
+    isVerified: boolean('is_verified').default(false),
+    createdAt: timestamp('created_at').defaultNow(),
+    updatedAt: timestamp('updated_at').defaultNow(),
 })
 
 export const SessionTable = pgTable('session', {

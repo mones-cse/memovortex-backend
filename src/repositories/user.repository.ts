@@ -27,8 +27,8 @@ export const updateUser = async (id: string, data: UserAccountInfo) => {
     return await db
         .update(UserTable)
         .set({
-            full_name: data.full_name,
-            updated_at: new Date(),
+            fullName: data.full_name,
+            updatedAt: new Date(),
         })
         .where(eq(UserTable.id, id))
 }
@@ -36,6 +36,6 @@ export const updateUser = async (id: string, data: UserAccountInfo) => {
 export const changePassword = async (userId: string, hashPassword: string) => {
     return await db
         .update(UserTable)
-        .set({ password_hash: hashPassword, updated_at: new Date() })
+        .set({ password: hashPassword, updatedAt: new Date() })
         .where(eq(UserTable.id, userId))
 }

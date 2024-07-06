@@ -12,7 +12,7 @@ export const loginUserService = async (email: string, password: string) => {
     if (!user) {
         throw new ApiError(404, 'Email not found')
     }
-    const isMatch = await passwordCompare(password, user.password_hash)
+    const isMatch = await passwordCompare(password, user.password)
     if (!isMatch) {
         throw new ApiError(404, 'Credentials not match')
     } else {
@@ -49,7 +49,7 @@ export const newAccessTokenByRefreshToken = async (refresh_token: string) => {
 
 export const changePasswordService = async (user: TUser, newPassword: string, oldPassword: string) => {
     // check old password
-    const isMatch = await passwordCompare(oldPassword, user.password_hash)
+    const isMatch = await passwordCompare(oldPassword, user.password)
     if (!isMatch) {
         throw new ApiError(404, 'Old password not match')
     }
