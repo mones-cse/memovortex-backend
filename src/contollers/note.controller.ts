@@ -17,8 +17,6 @@ const createNote = async (req: Request, res: Response, next: NextFunction) => {
 const removeNote = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id
-        console.log('🚀 ~ id:', id)
-
         const result = await removeNoteService(id)
         successResponse(res, 200, 'Note deleted successfully', result)
     } catch (err: any) {
@@ -41,7 +39,6 @@ const updateNote = async (req: Request, res: Response, next: NextFunction) => {
         const user = req.user as TUser
         const noteId = req.params.id
         const data = req.body
-        console.log('🚀 ~ updateNote ~ data:', data, noteId, user)
         const result = await updateNotesService(noteId, user.id, data)
         successResponse(res, 200, 'Note updated successfully', result)
     } catch (err: any) {
