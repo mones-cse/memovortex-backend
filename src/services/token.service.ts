@@ -4,7 +4,7 @@ import env from '../config/env'
 import crypto from 'crypto'
 
 export const issueJWT = async (user: TUser) => {
-    const expiresIn = '1h' // 1000ms * 60s * 60m * 24h  = 1 days
+    const expiresIn = '6h' // 1000ms * 60s * 60m * 24h  = 1 days
 
     const payload = {
         sub: user.id,

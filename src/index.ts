@@ -6,6 +6,16 @@ import app from './app'
 import { client } from './config/database'
 import strategy from './config/passport'
 
+declare global {
+    interface BigInt {
+        toJSON: () => string
+    }
+}
+
+BigInt.prototype.toJSON = function () {
+    return this.toString()
+}
+
 const port = env.PORT
 
 const startServer = async () => {

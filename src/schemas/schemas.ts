@@ -1,5 +1,6 @@
-import { pgTable, uuid, varchar, timestamp, boolean, text } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, varchar, timestamp, boolean, text, bigint, AnyPgColumn } from 'drizzle-orm/pg-core'
 import { sql } from 'drizzle-orm'
+
 export const UserTable = pgTable('user', {
     id: uuid('id').primaryKey().defaultRandom(),
     email: varchar('email', { length: 100 }).notNull().unique(),
@@ -36,4 +37,27 @@ export const NoteTable = pgTable('note', {
     deletedAt: timestamp('deleted_at')
         .default(sql`NULL`)
         .$type<Date | null>(),
+})
+
+export const DocumentTable = pgTable('document', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    createdBy: uuid('created_by')
+        .notNull()
+        .references(() => UserTable.id),
+    fileName: varchar('file_name', { length: 255 }).notNull(),
+    fileType: varchar('file_type', { length: 50 }).notNull(),
+    mimeType: varchar('mime_type', { length: 100 }).notNull(),
+    fileSize: bigint('file_size', { mode: 'bigint' }).notNull(),
+    createdAt: timestamp('created_at').defaultNow(),
+    updatedAt: timestamp('updated_at').defaultNow(),
+    lastAccessedAt: timestamp('last_accessed_at').defaultNow(),
+    deletedAt: timestamp('deleted_at')
+        .default(sql`NULL`)
+        .$type<Date | null>(),
+    fileS3key: varchar('file_s3_key', { length: 255 }).notNull(),
+    category: varchar('category', { length: 100 }).notNull(),
+    parentId: uuid('parent_id')
+        .default(sql`NULL`)
+        .references((): AnyPgColumn => DocumentTable.id),
+    isDirectory: boolean('is_directory').default(false),
 })

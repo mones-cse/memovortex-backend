@@ -1,5 +1,6 @@
+import { TUser } from './../config/database'
 import env from '../config/env'
-
+import { createDocument, getDocuments } from '../repositories/document.repository'
 const AWS = require('aws-sdk')
 
 AWS.config.update({
@@ -42,4 +43,17 @@ export const getSignedUrlService = async () => {
             resolve(url)
         })
     })
+}
+
+export const crateDeocumentService = async (user: TUser, document: any) => {
+    const createdBy = user.id
+    const data = { ...document, createdBy }
+    const response = await createDocument(data)
+    return response
+}
+
+export const getDocumentsService = async (user: TUser) => {
+    const createdBy = user.id
+    const response = await getDocuments(createdBy)
+    return response
 }
