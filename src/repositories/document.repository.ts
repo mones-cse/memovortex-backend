@@ -1,48 +1,54 @@
-import { eq } from 'drizzle-orm'
+import { eq, and, isNull } from 'drizzle-orm'
 import { DocumentTable } from '@src/schemas/schemas'
 import { db } from '../config/database'
 
+const documentSerializer = {
+    id: DocumentTable.id,
+    isDirectory: DocumentTable.isDirectory,
+    fileName: DocumentTable.fileName,
+    fileType: DocumentTable.fileType,
+    mimeType: DocumentTable.mimeType,
+    fileSize: DocumentTable.fileSize,
+    fileS3key: DocumentTable.fileS3key,
+    updatedAt: DocumentTable.updatedAt,
+    parentId: DocumentTable.parentId,
+}
 export const createDocument = async (document: any) => {
-    return await db.insert(DocumentTable).values(document).returning()
+    return await db.insert(DocumentTable).values(document).returning(documentSerializer)
 }
 
+// todo - add pagination
+// todo - change folder name getDocumentsAtRoot
 export const getDocuments = async (userId: string) => {
-    return await db.select().from(DocumentTable).where(eq(DocumentTable.createdBy, userId))
+    return await db
+        .select(documentSerializer)
+        .from(DocumentTable)
+        .where(and(eq(DocumentTable.createdBy, userId), isNull(DocumentTable.parentId)))
 }
 
-// import { eq, and, desc } from 'drizzle-orm'
-// import { TUser, db } from '../config/database'
-// import { NoteTable } from '../schemas/schemas'
-// import { TInsertNote, TUpdateNote } from '../types/note.types'
-// const noteSerializer = {
-//     id: NoteTable.id,
-//     noteTitle: NoteTable.noteTitle,
-//     noteContent: NoteTable.noteContent,
-//     isNoteFavourite: NoteTable.isNoteFavourite,
-//     noteBgColor: NoteTable.noteBgColor,
-//     createdAt: NoteTable.createdAt,
-//     updatedAt: NoteTable.updatedAt,
-// }
-// export const createNote = async (note: TInsertNote) => {
-//     return await db.insert(NoteTable).values(note).returning(noteSerializer)
-// }
+export const getDocumentsWithParentID = async (parentId: string) => {
+    return await db.select(documentSerializer).from(DocumentTable).where(eq(DocumentTable.parentId, parentId))
+}
 
-// export const removeNote = async (id: string) => {
-//     return await db.delete(NoteTable).where(eq(NoteTable.id, id))
-// }
+// todo remove file from s3 bucket
+export const deleteDocument = async (documentId: string) => {
+    try {
+        const result = await db.transaction(async (tx) => {
+            // The cascade will handle deleting child documents automatically
+            await tx.delete(DocumentTable).where(eq(DocumentTable.id, documentId))
+        })
+        console.log(`Document ${documentId} and its children deleted successfully`)
+        return result
+    } catch (error) {
+        console.error(`Error deleting document ${documentId}:`, error)
+        throw error
+    }
+}
 
-// export const getNotes = async (user: TUser) => {
-//     return await db
-//         .select(noteSerializer)
-//         .from(NoteTable)
-//         .where(eq(NoteTable.createdBy, user.id))
-//         .orderBy(desc(NoteTable.updatedAt))
-// }
-
-// export const updateNotes = async (noteId: string, userId: string, note: TUpdateNote) => {
-//     return await db
-//         .update(NoteTable)
-//         .set(note)
-//         .where(and(eq(NoteTable.id, noteId), eq(NoteTable.createdBy, userId)))
-//         .returning(noteSerializer)
-// }
+export const patchDocument = async (documentId: string, data: any) => {
+    return await db
+        .update(DocumentTable)
+        .set(data)
+        .where(eq(DocumentTable.id, documentId))
+        .returning(documentSerializer)
+}

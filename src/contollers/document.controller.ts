@@ -36,14 +36,54 @@ const getS3UploadUrl = async (req: Request, res: Response, next: NextFunction) =
 }
 
 const getSignedUrl = async (req: Request, res: Response, next: NextFunction) => {
-    console.log('getSignedUrl', req.body)
     try {
-        const url = await documentService.getSignedUrlService()
-        // todo successResponse(res, 200, 'New s3 signed url created successfully', { url })
-        return res.json({ url })
+        const { fileS3Key } = req.params
+        const url = await documentService.getSignedUrlService(fileS3Key)
+        return successResponse(res, 200, 'New s3 signed url created successfully', { url })
     } catch (err: any) {
         next(err)
     }
 }
 
-export default { getS3UploadUrl, getSignedUrl, getDocuments, postDocuments }
+const deleteDocument = async (req: Request, res: Response, next: NextFunction) => {
+    console.log('deleteDocument', req.body)
+    try {
+        const { documentId } = req.params
+        await documentService.deleteDocumentService(documentId)
+        successResponse(res, 200, 'Document deleted successfully')
+    } catch (err: any) {
+        next(err)
+    }
+}
+
+export const getDocumentsWithParentId = async (req: Request, res: Response, next: NextFunction) => {
+    console.log('getDocumentsWithParentId', req.body)
+    try {
+        const { parentId } = req.params
+        const result = await documentService.getDocumentsWithParentIdService(parentId)
+        successResponse(res, 200, ' all documents fetched successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
+export const patchDocument = async (req: Request, res: Response, next: NextFunction) => {
+    console.log('patchDocument', req.body)
+    try {
+        const { documentId } = req.params
+        const result = await documentService.patchDocumentService(documentId, req.body)
+        successResponse(res, 200, 'Document updated successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
+export default {
+    getS3UploadUrl,
+    getSignedUrl,
+    getDocuments,
+    postDocuments,
+    deleteDocument,
+    getDocumentsWithParentId,
+    patchDocument,
+}

@@ -10,15 +10,10 @@ export default function validateData(schema: z.ZodObject<any, any>) {
             schema.parse(req.body)
             next()
         } catch (error) {
-            console.log('🚀 ~ return ~ error:', error)
             if (error instanceof ZodError) {
-                const errorMessages = error.errors.map(
-                    (issue: any) =>
-                        // message: `${issue.path.join('.')} is ${issue.message}`,
-                        issue.message,
-                )
+                const errorMessages = error.errors.map((issue: any) => `For ${issue.path}: ${issue.message}`)
                 const errorMessagesString = errorMessages.reduce((acc, curr) => acc + curr + ', ', '')
-                next(new ApiError(400, `Validation errors: ${errorMessagesString}`))
+                next(new ApiError(StatusCodes.BAD_REQUEST, `Validation errors: ${errorMessagesString}`))
             } else {
                 next(error)
             }

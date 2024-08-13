@@ -41,23 +41,31 @@ export const NoteTable = pgTable('note', {
 
 export const DocumentTable = pgTable('document', {
     id: uuid('id').primaryKey().defaultRandom(),
+
+    fileName: varchar('file_name', { length: 255 }).notNull(),
+    isDirectory: boolean('is_directory').default(false),
+    fileType: varchar('file_type', { length: 50 })
+        .default(sql`NULL`)
+        .$type<string | null>(),
+    mimeType: varchar('mime_type', { length: 100 })
+        .default(sql`NULL`)
+        .$type<string | null>(),
+    fileSize: bigint('file_size', { mode: 'bigint' })
+        .default(sql`NULL`)
+        .$type<bigint | null>(),
+    fileS3key: varchar('file_s3_key', { length: 255 })
+        .default(sql`NULL`)
+        .$type<string | null>(),
+    parentId: uuid('parent_id')
+        .default(sql`NULL`)
+        .references((): AnyPgColumn => DocumentTable.id, { onDelete: 'cascade' }),
     createdBy: uuid('created_by')
         .notNull()
         .references(() => UserTable.id),
-    fileName: varchar('file_name', { length: 255 }).notNull(),
-    fileType: varchar('file_type', { length: 50 }).notNull(),
-    mimeType: varchar('mime_type', { length: 100 }).notNull(),
-    fileSize: bigint('file_size', { mode: 'bigint' }).notNull(),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),
     lastAccessedAt: timestamp('last_accessed_at').defaultNow(),
     deletedAt: timestamp('deleted_at')
         .default(sql`NULL`)
         .$type<Date | null>(),
-    fileS3key: varchar('file_s3_key', { length: 255 }).notNull(),
-    category: varchar('category', { length: 100 }).notNull(),
-    parentId: uuid('parent_id')
-        .default(sql`NULL`)
-        .references((): AnyPgColumn => DocumentTable.id),
-    isDirectory: boolean('is_directory').default(false),
 })
