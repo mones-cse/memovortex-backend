@@ -14,7 +14,6 @@ const getDocuments = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 const postDocuments = async (req: Request, res: Response, next: NextFunction) => {
-    console.log('postDocuments', req.body)
     try {
         const user = req.user as TUser
         const result = await documentService.crateDeocumentService(user, req.body)
@@ -25,10 +24,11 @@ const postDocuments = async (req: Request, res: Response, next: NextFunction) =>
 }
 
 const getS3UploadUrl = async (req: Request, res: Response, next: NextFunction) => {
-    console.log('getUploadUrl', req.body)
     try {
         const { fileName, fileType } = req.body
-        const url = await documentService.getPhotoUrlService(fileName, fileType)
+        const user = req.user as TUser
+        const customFileName = `${user.id}/${fileName}`
+        const url = await documentService.getPhotoUrlService(customFileName, fileType)
         successResponse(res, 200, 'New s3 signed url created successfully', { url })
     } catch (err: any) {
         next(err)
@@ -38,7 +38,8 @@ const getS3UploadUrl = async (req: Request, res: Response, next: NextFunction) =
 const getSignedUrl = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { fileS3Key } = req.params
-        const url = await documentService.getSignedUrlService(fileS3Key)
+        const user = req.user as TUser
+        const url = await documentService.getSignedUrlService(`${user.id}/${fileS3Key}`)
         return successResponse(res, 200, 'New s3 signed url created successfully', { url })
     } catch (err: any) {
         next(err)
