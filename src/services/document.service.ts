@@ -6,6 +6,7 @@ import {
     deleteDocument,
     getDocumentsWithParentID,
     patchDocument,
+    getDocumentById,
 } from '../repositories/document.repository'
 const AWS = require('aws-sdk')
 
@@ -38,7 +39,7 @@ export const getSignedUrlService = async (fileS3Key: string) => {
     const params = {
         Bucket: env.AWS_BUCKET_NAME,
         Key: fileS3Key,
-        Expires: 60 * 5, // URL expires in 5 minutes
+        Expires: 60 * 60, // URL expires in 60 minutes
     }
     console.log('🚀 ~ getSignedUrlService ~ params:', params)
     return new Promise((resolve, reject) => {
@@ -49,6 +50,37 @@ export const getSignedUrlService = async (fileS3Key: string) => {
             resolve(url)
         })
     })
+}
+
+export const duplicateDocumentService = async (documentId: string, user: TUser) => {
+    // fetch the document
+    const documentItem = await getDocumentById(documentId)
+
+    // extract fileS3Key from document
+    const fileS3Key = documentItem[0].fileS3key
+    const createdBy = user.id
+    var params = {
+        Bucket: env.AWS_BUCKET_NAME,
+        CopySource: `${env.AWS_BUCKET_NAME}/${createdBy}/${fileS3Key}`,
+        Key: `${createdBy}/Copy of ${fileS3Key}`,
+    }
+
+    // copy s3 object
+    await s3.copyObject(params).promise()
+
+    // save new document with new fileS3Key
+    const data = {
+        fileName: `Copy of ${documentItem[0].fileName}`,
+        isDirectory: documentItem[0].isDirectory,
+        fileType: documentItem[0].fileType,
+        mimeType: documentItem[0].mimeType,
+        fileSize: documentItem[0].fileSize,
+        fileS3key: `Copy of ${fileS3Key}`,
+        parentId: documentItem[0].parentId,
+        createdBy,
+    }
+    const response = await createDocument(data)
+    return response
 }
 
 export const crateDeocumentService = async (user: TUser, document: any) => {

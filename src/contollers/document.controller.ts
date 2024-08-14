@@ -79,6 +79,19 @@ export const patchDocument = async (req: Request, res: Response, next: NextFunct
     }
 }
 
+export const duplicateDocument = async (req: Request, res: Response, next: NextFunction) => {
+    console.log('duplicateDocument', req.body)
+    try {
+        // throw new ApiError(400, 'Not Implimented')
+        const { fileS3Key } = req.params
+        const user = req.user as TUser
+        const result = await documentService.duplicateDocumentService(fileS3Key, user)
+        successResponse(res, 200, 'Document duplicated successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
 export default {
     getS3UploadUrl,
     getSignedUrl,
@@ -87,4 +100,5 @@ export default {
     deleteDocument,
     getDocumentsWithParentId,
     patchDocument,
+    duplicateDocument,
 }

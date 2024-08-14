@@ -26,6 +26,10 @@ export const getDocuments = async (userId: string) => {
         .where(and(eq(DocumentTable.createdBy, userId), isNull(DocumentTable.parentId)))
 }
 
+export const getDocumentById = async (documentId: string) => {
+    return await db.select(documentSerializer).from(DocumentTable).where(eq(DocumentTable.id, documentId))
+}
+
 export const getDocumentsWithParentID = async (parentId: string) => {
     return await db.select(documentSerializer).from(DocumentTable).where(eq(DocumentTable.parentId, parentId))
 }
