@@ -1,4 +1,5 @@
 import { eq, and, isNull } from 'drizzle-orm'
+import { sql } from 'drizzle-orm/sql'
 import { DocumentTable } from '@src/schemas/schemas'
 import { db } from '../config/database'
 
@@ -55,4 +56,52 @@ export const patchDocument = async (documentId: string, data: any) => {
         .set(data)
         .where(eq(DocumentTable.id, documentId))
         .returning(documentSerializer)
+}
+
+export const getParentsById = async (documentId: string) => {
+    const query = sql`
+    WITH RECURSIVE ParentHierarchy AS (
+        SELECT
+            id,
+            parent_id,
+            file_name,
+            1 AS level
+        FROM
+            document
+        WHERE
+            id = ${documentId}
+        UNION ALL
+        SELECT
+            d.id,
+            d.parent_id,
+            d.file_name,
+            ph.level + 1
+        FROM
+            document d
+        INNER JOIN
+            ParentHierarchy ph ON d.id = ph.parent_id
+        WHERE
+            ph.level < 4
+    )
+    SELECT
+        id,
+        parent_id,
+        file_name,
+        level
+    FROM
+        ParentHierarchy
+    ORDER BY
+        level DESC;
+    `
+    const result = await db.execute(query)
+
+    // Transform the result to match the desired format
+    const transformedData = result.rows.map((row) => ({
+        id: row.id,
+        fileName: row.file_name,
+        parentId: row.parent_id,
+        level: row.level,
+    }))
+
+    return transformedData
 }

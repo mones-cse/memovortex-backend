@@ -12,6 +12,7 @@ router.use((req, res, next) => {
 router.get('/', isAuthentic, documentController.getDocuments)
 router.get('/get-signed-document/:fileS3Key', isAuthentic, documentController.getSignedUrl)
 router.get('/:parentId', isAuthentic, documentController.getDocumentsWithParentId)
+router.get('/get-parents/:documentId', isAuthentic, documentController.getParentsById)
 router.post('/', isAuthentic, validateData(documentCreateSchema), documentController.postDocuments)
 router.post('/duplicate/:fileS3Key', isAuthentic, documentController.duplicateDocument)
 router.post('/folder', isAuthentic, validateData(folderCreateSchema), documentController.postDocuments)

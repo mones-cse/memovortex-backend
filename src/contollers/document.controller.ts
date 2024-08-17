@@ -92,6 +92,16 @@ export const duplicateDocument = async (req: Request, res: Response, next: NextF
     }
 }
 
+const getParentsById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { documentId } = req.params
+        const result = await documentService.getParentsByIdService(documentId)
+        successResponse(res, 200, 'all parents id fetched successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
 export default {
     getS3UploadUrl,
     getSignedUrl,
@@ -101,4 +111,5 @@ export default {
     getDocumentsWithParentId,
     patchDocument,
     duplicateDocument,
+    getParentsById,
 }

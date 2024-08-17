@@ -1,6 +1,7 @@
 import { TUser } from './../config/database'
 import env from '../config/env'
 import {
+    getParentsById,
     createDocument,
     getDocuments,
     deleteDocument,
@@ -109,5 +110,10 @@ export const getDocumentsWithParentIdService = async (parentId: string) => {
 export const patchDocumentService = async (documentId: string, data: any) => {
     const updatedAt = new Date()
     const response = await patchDocument(documentId, { ...data, updatedAt })
+    return response
+}
+
+export const getParentsByIdService = async (documentId: string) => {
+    const response = await getParentsById(documentId)
     return response
 }
