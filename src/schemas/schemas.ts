@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, timestamp, boolean, text, bigint, AnyPgColumn } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, varchar, timestamp, boolean, text, bigint, AnyPgColumn, integer } from 'drizzle-orm/pg-core'
 import { sql } from 'drizzle-orm'
 
 export const UserTable = pgTable('user', {
@@ -69,3 +69,36 @@ export const DocumentTable = pgTable('document', {
         .default(sql`NULL`)
         .$type<Date | null>(),
 })
+
+export const DeckTable = pgTable('deck', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    deckTitle: varchar('deck_title', { length: 255 }).notNull(),
+    deckDescription: text('deck_description').notNull(),
+    createdBy: uuid('created_by')
+        .notNull()
+        .references(() => UserTable.id),
+    createdAt: timestamp('created_at').defaultNow(),
+    updatedAt: timestamp('updated_at').defaultNow(),
+    deletedAt: timestamp('deleted_at')
+        .default(sql`NULL`)
+        .$type<Date | null>(),
+})
+
+// export const CardTable = pgTable('card', {
+//     card_id: uuid('card_id').primaryKey().defaultRandom(),
+//     deck_id: uuid('deck_id')
+//         .notNull()
+//         .references(() => DeckTable.id),
+//     card_content_id: uuid('card_content_id')
+//         .notNull()
+//         .references(() => NoteTable.id), // Assuming card_content_id references NoteTable
+//     reps: integer('reps').notNull(),
+//     due: timestamp('due').notNull(),
+//     state: varchar('state', { length: 50 }).notNull(),
+//     last_review: timestamp('last_review').notNull(),
+//     elapsed_days: integer('elapsed_days').notNull(),
+//     scheduled_days: integer('scheduled_days').notNull(),
+//     difficulty: integer('difficulty').notNull(),
+//     stability: integer('stability').notNull(),
+//     lapses: integer('lapses').notNull(),
+// })

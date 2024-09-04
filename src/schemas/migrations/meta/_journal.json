@@ -85,6 +85,13 @@
             "when": 1723331826460,
             "tag": "0011_broken_rumiko_fujikawa",
             "breakpoints": true
+        },
+        {
+            "idx": 12,
+            "version": "7",
+            "when": 1725464975570,
+            "tag": "0012_fine_prowler",
+            "breakpoints": true
         }
     ]
 }
