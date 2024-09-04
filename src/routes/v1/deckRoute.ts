@@ -11,6 +11,7 @@ router.use((req, res, next) => {
 })
 // router.get('/', isAuthentic, noteController.getNotes)
 router.post('/', isAuthentic, validateData(deckCreateSchema), deckController.createDeck)
+router.get('/', isAuthentic, deckController.getDecks)
 // router.patch('/:id', isAuthentic, validateData(noteUpdateSchema), noteController.updateNote)
 // router.delete('/:id', isAuthentic, noteController.removeNote)
 
