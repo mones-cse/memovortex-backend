@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { createDeckService, getDecksService } from '@src/services/deck.service'
+import { createDeckService, getDecksService, removeDeckService } from '@src/services/deck.service'
 import { successResponse } from '@src/utils/response'
 import { TUser } from '@src/config/database'
 
@@ -19,6 +19,17 @@ const getDecks = async (req: Request, res: Response, next: NextFunction) => {
         const user = req.user
         const result = await getDecksService(user)
         successResponse(res, 200, 'Decks fetched successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
+// todo: handle cases where deck is not found
+const removeDeck = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = req.params.id
+        const result = await removeDeckService(id)
+        successResponse(res, 200, 'Deck deleted successfully', id)
     } catch (err: any) {
         next(err)
     }
@@ -59,6 +70,7 @@ const getDecks = async (req: Request, res: Response, next: NextFunction) => {
 export default {
     createDeck,
     getDecks,
+    removeDeck,
     // removeNote,
     // getNotes,
     // updateNote,

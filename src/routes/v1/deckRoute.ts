@@ -9,10 +9,9 @@ router.use((req, res, next) => {
     console.log('Deck middleware')
     next()
 })
-// router.get('/', isAuthentic, noteController.getNotes)
 router.post('/', isAuthentic, validateData(deckCreateSchema), deckController.createDeck)
 router.get('/', isAuthentic, deckController.getDecks)
 // router.patch('/:id', isAuthentic, validateData(noteUpdateSchema), noteController.updateNote)
-// router.delete('/:id', isAuthentic, noteController.removeNote)
+router.delete('/:id', isAuthentic, deckController.removeDeck)
 
 export default router
