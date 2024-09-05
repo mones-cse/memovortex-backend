@@ -24,6 +24,17 @@ const getDecks = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const getDeck = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const deckId = req.params.id
+        const user = req.user as TUser
+        const result = await deckService.getDeckService(deckId, user.id)
+        successResponse(res, 200, 'Deck fetched successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
 const removeDeck = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = req.params.id
@@ -46,20 +57,10 @@ const updateDeck = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-// const getNotes = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const user = req.user
-//         const result = await getNotesService(user)
-//         successResponse(res, 200, 'Notes fetched successfully', result)
-//     } catch (err: any) {
-//         next(err)
-//     }
-// }
-
 export default {
     createDeck,
     getDecks,
+    getDeck,
     removeDeck,
     updateDeck,
-    // getNotes,
 }

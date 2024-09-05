@@ -8,13 +8,27 @@ import ApiError from '@src/errors/ApiError'
 const createDeck = async (deck: TInsertDeck) => {
     return await db.insert(DeckTable).values(deck).returning(deckSerializer)
 }
-
+// todo: handle deleted file
 const getDecks = async (userId: string) => {
     return await db
         .select(deckSerializer)
         .from(DeckTable)
         .where(eq(DeckTable.createdBy, userId))
         .orderBy(desc(DeckTable.updatedAt))
+}
+
+// todo: handle deleted file
+const getDeck = async (deckId: string, userId: string) => {
+    const deck = await db
+        .select(deckSerializer)
+        .from(DeckTable)
+        .where(and(eq(DeckTable.id, deckId), eq(DeckTable.createdBy, userId)))
+
+    if (deck.length === 0) {
+        throw new ApiError(404, 'Deck not found')
+    }
+
+    return deck
 }
 
 // todo: same way need to update noteRemove, document Remove code
@@ -42,6 +56,7 @@ const updateDeck = async (id: string, userId: string, data: any) => {
 export default {
     createDeck,
     getDecks,
+    getDeck,
     removeDeck,
     updateDeck,
 }

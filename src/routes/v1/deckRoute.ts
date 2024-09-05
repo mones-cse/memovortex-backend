@@ -11,6 +11,7 @@ router.use((req, res, next) => {
 })
 router.post('/', isAuthentic, validateData(deckCreateSchema), deckController.createDeck)
 router.get('/', isAuthentic, deckController.getDecks)
+router.get('/:id', isAuthentic, deckController.getDeck)
 router.patch('/:id', isAuthentic, validateData(deckUpdateSchema), deckController.updateDeck)
 router.delete('/:id', isAuthentic, deckController.removeDeck)
 

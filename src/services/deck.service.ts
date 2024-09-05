@@ -13,6 +13,11 @@ const getDecksService = async (user: any) => {
     return decks
 }
 
+const getDeckService = async (deckId: string, userId: string) => {
+    const deck = await deckRepository.getDeck(deckId, userId)
+    return deck
+}
+
 const removeDeckService = async (id: string) => {
     const result = await deckRepository.removeDeck(id)
     return result
@@ -27,6 +32,7 @@ const updateDeckService = async (deckId: string, userId: string, data: any) => {
 export default {
     createDeckService,
     getDecksService,
+    getDeckService,
     removeDeckService,
     updateDeckService,
 }
