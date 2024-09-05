@@ -2,10 +2,17 @@ import { z } from 'zod'
 import { DeckTable } from '@src/schemas/schemas'
 import { createSelectSchema, createInsertSchema } from 'drizzle-zod'
 
-// const SelectedDeckSchema = createSelectSchema(DeckTable)
+// Schema defination
+const SelectedDeckSchema = createSelectSchema(DeckTable)
 const InsertDeckSchema = createInsertSchema(DeckTable)
 
-// export type TDeck = z.infer<typeof SelectedDeckSchema>
-export type TInsertDeck = z.infer<typeof InsertDeckSchema>
+// Base type defination
+type Deck = z.infer<typeof SelectedDeckSchema>
+type InsertDeck = z.infer<typeof InsertDeckSchema>
 
-// export type TUpdateDeck = Partial<Omit<TInsertDeck, 'id'>> & { id: string }
+// Derived type definations
+export type TDeckServiceCreateInput = Pick<InsertDeck, 'deckTitle' | 'deckDescription'>
+export type TDeckRepositoryCreateInput = Pick<InsertDeck, 'deckTitle' | 'deckDescription' | 'createdBy'>
+
+export type TDeckServiceUpdateInput = Partial<TDeckServiceCreateInput>
+export type TDeckReposirotyUpdateInput = TDeckServiceUpdateInput

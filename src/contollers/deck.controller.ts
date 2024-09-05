@@ -7,7 +7,7 @@ const createDeck = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user as TUser
         const data = req.body
-        const result = await deckService.createDeckService(user, data)
+        const result = await deckService.createDeckService(user.id, data)
         successResponse(res, 200, 'New Deck created successfully', result)
     } catch (err: any) {
         next(err)
@@ -17,7 +17,7 @@ const createDeck = async (req: Request, res: Response, next: NextFunction) => {
 const getDecks = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user as TUser
-        const result = await deckService.getDecksService(user)
+        const result = await deckService.getDecksService(user.id)
         successResponse(res, 200, 'Decks fetched successfully', result)
     } catch (err: any) {
         next(err)

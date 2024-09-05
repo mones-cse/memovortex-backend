@@ -1,11 +1,11 @@
 import { eq, desc, and } from 'drizzle-orm'
 import { db } from '@src/config/database'
 import { DeckTable } from '@src/schemas/schemas'
-import { TInsertDeck } from '@src/types/deck.types'
+import { TDeckRepositoryCreateInput, TDeckReposirotyUpdateInput } from '@src/types/deck.types'
 import { deckSerializer } from '@src/serializers/deckSerializer'
 import ApiError from '@src/errors/ApiError'
 
-const createDeck = async (deck: TInsertDeck) => {
+const createDeck = async (deck: TDeckRepositoryCreateInput) => {
     return await db.insert(DeckTable).values(deck).returning(deckSerializer)
 }
 // todo: handle deleted file
@@ -41,7 +41,7 @@ const removeDeck = async (id: string) => {
 }
 
 // todo: same way need to update noteUpdate, document Update code
-const updateDeck = async (id: string, userId: string, data: any) => {
+const updateDeck = async (id: string, userId: string, data: TDeckReposirotyUpdateInput) => {
     const result = await db
         .update(DeckTable)
         .set(data)
