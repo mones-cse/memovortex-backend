@@ -1,4 +1,4 @@
-import { deckCreateSchema } from '@src/validations/deck.validation'
+import { deckCreateSchema, deckUpdateSchema } from '@src/validations/deck.validation'
 import express from 'express'
 import isAuthentic from '../../middlewares/isAuthentic'
 import validateData from '../../middlewares/validationMiddleware'
@@ -11,7 +11,7 @@ router.use((req, res, next) => {
 })
 router.post('/', isAuthentic, validateData(deckCreateSchema), deckController.createDeck)
 router.get('/', isAuthentic, deckController.getDecks)
-// router.patch('/:id', isAuthentic, validateData(noteUpdateSchema), noteController.updateNote)
+router.patch('/:id', isAuthentic, validateData(deckUpdateSchema), deckController.updateDeck)
 router.delete('/:id', isAuthentic, deckController.removeDeck)
 
 export default router

@@ -1,20 +1,32 @@
 import { TInsertDeck } from '@src/types/deck.types'
-import { createDeck, getDecks, removeDeck } from '@src/repositories/deck.repository'
-import { TUser } from '@src/config/database'
+import deckRepository from '@src/repositories/deck.repository'
 
 //todo: handle any
-export const createDeckService = async (user: any, data: TInsertDeck) => {
+const createDeckService = async (user: any, data: TInsertDeck) => {
     const deck = { ...data, createdBy: user.id }
-    const response = await createDeck(deck)
+    const response = await deckRepository.createDeck(deck)
     return response
 }
 
-export const getDecksService = async (user: any) => {
-    const decks = await getDecks(user.id)
+const getDecksService = async (user: any) => {
+    const decks = await deckRepository.getDecks(user.id)
     return decks
 }
 
-export const removeDeckService = async (id: string) => {
-    const result = await removeDeck(id)
+const removeDeckService = async (id: string) => {
+    const result = await deckRepository.removeDeck(id)
     return result
+}
+
+// todo change any type
+const updateDeckService = async (deckId: string, userId: string, data: any) => {
+    const result = await deckRepository.updateDeck(deckId, userId, data)
+    return result
+}
+
+export default {
+    createDeckService,
+    getDecksService,
+    removeDeckService,
+    updateDeckService,
 }

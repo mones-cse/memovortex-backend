@@ -5,4 +5,4 @@ export const deckCreateSchema = z.object({
     deckDescription: z.string().min(3, { message: 'note content must be at least 3 charcters long' }).max(1000),
 })
 
-export const noteUpdateSchema = deckCreateSchema.partial()
+export const deckUpdateSchema = deckCreateSchema.partial().strict()
