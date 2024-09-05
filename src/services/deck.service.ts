@@ -1,14 +1,15 @@
 import { TInsertDeck } from '@src/types/deck.types'
 import deckRepository from '@src/repositories/deck.repository'
+import { TUser } from '@src/config/database'
 
 //todo: handle any
-const createDeckService = async (user: any, data: TInsertDeck) => {
+const createDeckService = async (user: TUser, data: TInsertDeck) => {
     const deck = { ...data, createdBy: user.id }
     const response = await deckRepository.createDeck(deck)
     return response
 }
 
-const getDecksService = async (user: any) => {
+const getDecksService = async (user: TUser) => {
     const decks = await deckRepository.getDecks(user.id)
     return decks
 }
