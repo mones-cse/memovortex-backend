@@ -1,6 +1,6 @@
 {
-    "id": "7851c648-8b68-4950-ab3c-6b128baf3fa3",
-    "prevId": "0317f3bd-def8-456a-bf95-8f5a9df17b27",
+    "id": "59b0c087-ad7c-4d73-876d-0990eb555b7b",
+    "prevId": "05f30596-365c-49db-b629-fd843f64362b",
     "version": "7",
     "dialect": "postgresql",
     "tables": {
@@ -48,6 +48,13 @@
                     "notNull": false,
                     "default": "'BASIC'"
                 },
+                "multiple_choice_options": {
+                    "name": "multiple_choice_options",
+                    "type": "text[]",
+                    "primaryKey": false,
+                    "notNull": false,
+                    "default": "'{}'::text[]"
+                },
                 "created_at": {
                     "name": "created_at",
                     "type": "timestamp",
@@ -72,6 +79,138 @@
             },
             "indexes": {},
             "foreignKeys": {},
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {}
+        },
+        "public.card": {
+            "name": "card",
+            "schema": "",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "uuid",
+                    "primaryKey": true,
+                    "notNull": true,
+                    "default": "gen_random_uuid()"
+                },
+                "deck_id": {
+                    "name": "deck_id",
+                    "type": "uuid",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "card_content_id": {
+                    "name": "card_content_id",
+                    "type": "uuid",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "reps": {
+                    "name": "reps",
+                    "type": "integer",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": 0
+                },
+                "due": {
+                    "name": "due",
+                    "type": "timestamp",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": "now()"
+                },
+                "state": {
+                    "name": "state",
+                    "type": "varchar(50)",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": "'NEW'"
+                },
+                "last_review": {
+                    "name": "last_review",
+                    "type": "timestamp",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": "now()"
+                },
+                "elapsed_days": {
+                    "name": "elapsed_days",
+                    "type": "integer",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": 0
+                },
+                "scheduled_days": {
+                    "name": "scheduled_days",
+                    "type": "integer",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": 0
+                },
+                "difficulty": {
+                    "name": "difficulty",
+                    "type": "integer",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": 0
+                },
+                "stability": {
+                    "name": "stability",
+                    "type": "integer",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": 0
+                },
+                "lapses": {
+                    "name": "lapses",
+                    "type": "integer",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": 0
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamp",
+                    "primaryKey": false,
+                    "notNull": false,
+                    "default": "now()"
+                },
+                "updated_at": {
+                    "name": "updated_at",
+                    "type": "timestamp",
+                    "primaryKey": false,
+                    "notNull": false,
+                    "default": "now()"
+                },
+                "deleted_at": {
+                    "name": "deleted_at",
+                    "type": "timestamp",
+                    "primaryKey": false,
+                    "notNull": false,
+                    "default": "NULL"
+                }
+            },
+            "indexes": {},
+            "foreignKeys": {
+                "card_deck_id_deck_id_fk": {
+                    "name": "card_deck_id_deck_id_fk",
+                    "tableFrom": "card",
+                    "tableTo": "deck",
+                    "columnsFrom": ["deck_id"],
+                    "columnsTo": ["id"],
+                    "onDelete": "no action",
+                    "onUpdate": "no action"
+                },
+                "card_card_content_id_card_content_id_fk": {
+                    "name": "card_card_content_id_card_content_id_fk",
+                    "tableFrom": "card",
+                    "tableTo": "card_content",
+                    "columnsFrom": ["card_content_id"],
+                    "columnsTo": ["id"],
+                    "onDelete": "no action",
+                    "onUpdate": "no action"
+                }
+            },
             "compositePrimaryKeys": {},
             "uniqueConstraints": {}
         },

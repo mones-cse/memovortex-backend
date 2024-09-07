@@ -41,7 +41,6 @@ export const NoteTable = pgTable('note', {
 
 export const DocumentTable = pgTable('document', {
     id: uuid('id').primaryKey().defaultRandom(),
-
     fileName: varchar('file_name', { length: 255 }).notNull(),
     isDirectory: boolean('is_directory').default(false),
     fileType: varchar('file_type', { length: 50 })
@@ -89,46 +88,41 @@ export const CardTable = pgTable('card', {
     deckId: uuid('deck_id')
         .notNull()
         .references(() => DeckTable.id),
-    cardContentid: uuid('card_content_id')
+    cardContentId: uuid('card_content_id')
         .notNull()
-        .references(() => CardContentTable.id), // todo: card_content_id references CardContentTable
-    reps: integer('reps').notNull(),
-    due: timestamp('due').notNull(),
-    state: varchar('state', { length: 50 }).notNull(),
-    lastReview: timestamp('last_review').notNull(),
-    elapsedDays: integer('elapsed_days').notNull(),
-    scheduledDays: integer('scheduled_days').notNull(),
-    difficulty: integer('difficulty').notNull(),
-    stability: integer('stability').notNull(),
-    lapses: integer('lapses').notNull(),
+        .references(() => CardContentTable.id),
+    reps: integer('reps').notNull().default(0),
+    due: timestamp('due').notNull().defaultNow(),
+    state: varchar('state', { length: 50 }).notNull().default('NEW'),
+    lastReview: timestamp('last_review').notNull().defaultNow(),
+    elapsedDays: integer('elapsed_days').notNull().default(0),
+    scheduledDays: integer('scheduled_days').notNull().default(0),
+    difficulty: integer('difficulty').notNull().default(0),
+    stability: integer('stability').notNull().default(0),
+    lapses: integer('lapses').notNull().default(0),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),
     deletedAt: timestamp('deleted_at')
         .default(sql`NULL`)
         .$type<Date | null>(),
 })
-
-const CardType = {
-    BASIC: 'basic',
-    MULTIPLE_CHOICE: 'multiple_choice',
-} as const
-
-type CardTypeValues = (typeof CardType)[keyof typeof CardType]
 
 export const CardContentTable = pgTable('card_content', {
     id: uuid('id').primaryKey().defaultRandom(),
     frontText: text('front_text').notNull(),
     backText: text('back_text').notNull(),
-    frontImageUrl: varchar('front_image_url', { length: 255 }),
-    backImageUrl: varchar('back_image_url', { length: 255 }),
-    cardType: varchar('card_type', { length: 50 }).$type<CardTypeValues>().notNull().default(CardType.BASIC),
-    multipleChoiceOptions: text('multiple_choice_options').array(),
+    frontImageUrl: varchar('front_image_url', { length: 255 }).default(''),
+    backImageUrl: varchar('back_image_url', { length: 255 }).default(''),
+    cardType: varchar('card_type', { length: 50 }).default('BASIC'),
+    multipleChoiceOptions: text('multiple_choice_options')
+        .array()
+        .default(sql`'{}'::text[]`),
+    tags: text('tags')
+        .array()
+        .default(sql`'{}'::text[]`),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),
     deletedAt: timestamp('deleted_at')
         .default(sql`NULL`)
         .$type<Date | null>(),
-    tags: text('tags').array(),
 })
-
-// learn about  multipleChoiceOptions: jsonb('multiple_choice_options').$type<string[]>(),

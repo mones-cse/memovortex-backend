@@ -107,6 +107,9 @@ importers:
             ts-node:
                 specifier: 10.9.2
                 version: 10.9.2(@types/node@20.14.2)(typescript@5.4.5)
+            type-expand:
+                specifier: 1.0.0
+                version: 1.0.0
             typescript:
                 specifier: 5.4.5
                 version: 5.4.5
@@ -2617,6 +2620,12 @@ packages:
             '@swc/wasm':
                 optional: true
 
+    type-expand@1.0.0:
+        resolution:
+            {
+                integrity: sha512-1fO/mIOl7QRreOBn83x07v8TL6OqhYKr/CHwFOI70D9cIr9YJ2PM/57Uazi9GbKSQJHB9yNXzYaE14wqQ4kmeQ==,
+            }
+
     type-is@1.6.18:
         resolution:
             {
@@ -4129,6 +4138,8 @@ snapshots:
             typescript: 5.4.5
             v8-compile-cache-lib: 3.0.1
             yn: 3.1.1
+
+    type-expand@1.0.0: {}
 
     type-is@1.6.18:
         dependencies:
