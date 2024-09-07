@@ -92,6 +92,13 @@
             "when": 1725464975570,
             "tag": "0012_fine_prowler",
             "breakpoints": true
+        },
+        {
+            "idx": 13,
+            "version": "7",
+            "when": 1725704560018,
+            "tag": "0013_strange_iron_patriot",
+            "breakpoints": true
         }
     ]
 }
