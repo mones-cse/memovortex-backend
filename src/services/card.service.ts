@@ -26,8 +26,8 @@ const getCardsService = async (userId: string, deckId: string) => {
     return cards
 }
 const getCardService = async (userId: string, cardId: string) => {
-    const cards = await cardRepository.getCard(cardId, userId)
-    return cards
+    const card = await cardRepository.getCard(cardId, userId)
+    return card
 }
 
 const removeCardService = async (id: string) => {
@@ -36,6 +36,10 @@ const removeCardService = async (id: string) => {
 }
 
 const updateCardService = async (userId: string, cardId: string, data: TCardServiceUpdateInput) => {
+    const card = await cardRepository.getCard(cardId, userId)
+    if (card.length === 0) {
+        throw new ApiError(404, 'Card not found or you are not the owner')
+    }
     const result = await cardRepository.updateCardContent(cardId, userId, data)
     return result
 }

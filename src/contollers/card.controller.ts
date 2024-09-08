@@ -52,12 +52,6 @@ const updateCard = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user as TUser
         const cardId = req.params.id
-
-        const card = await cardService.getCardService(user.id, cardId)
-        // check if user is the owner of the card
-        if (card.length === 0) {
-            throw new ApiError(404, 'Card not found or you are not the owner')
-        }
         const data = req.body
         const result = await cardService.updateCardService(user.id, cardId, data)
         successResponse(res, 200, 'Card updated successfully', result)
