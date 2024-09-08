@@ -3,6 +3,7 @@ import { db } from '@src/config/database'
 import { CardContentTable, CardTable } from '@src/schemas/schemas'
 import { TCardContentRepositoryCreateInput, TCardRepositoryCreateInput } from '@src/types/card.types'
 import { cardContentSerializer, cardSerializer, cardsContentSerializer } from '@src/serializers/cardSerializer'
+import ApiError from '@src/errors/ApiError'
 
 const createCardContent = async (cardContent: TCardContentRepositoryCreateInput) => {
     return await db.insert(CardContentTable).values(cardContent).returning(cardContentSerializer)
@@ -46,6 +47,14 @@ const getCard = async (cardId: string, userId: string) => {
     return result
 }
 
+const removeCard = async (id: string) => {
+    const result = await db.delete(CardTable).where(eq(CardTable.id, id))
+    if (result.rowCount === 0) {
+        throw new ApiError(404, 'Card not found')
+    }
+    return result
+}
+
 // // todo: handle deleted file
 // const getDecks = async (userId: string) => {
 //     return await db
@@ -69,15 +78,6 @@ const getCard = async (cardId: string, userId: string) => {
 //     return deck
 // }
 
-// // todo: same way need to update noteRemove, document Remove code
-// const removeDeck = async (id: string) => {
-//     const result = await db.delete(DeckTable).where(eq(DeckTable.id, id))
-//     if (result.rowCount === 0) {
-//         throw new ApiError(404, 'Deck not found')
-//     }
-//     return result
-// }
-
 // // todo: same way need to update noteUpdate, document Update code
 // const updateDeck = async (id: string, userId: string, data: TDeckReposirotyUpdateInput) => {
 //     const result = await db
@@ -96,19 +96,6 @@ export default {
     createCard,
     getCards,
     getCard,
-    //     getDecks,
-    //     getDeck,
-    //     removeDeck,
+    removeCard,
     //     updateDeck,
 }
-
-// {
-//     "deckId":"0e8df180-7828-49fd-b6ca-c9f89ffa4b23",
-//     "frontText": "Question 1",
-//     "backText": "Answer 1",
-//     "frontImageUrl": "",
-//     "backImageUrl": "",
-//     "cardType": "BASIC",
-//     "multipleChoiceOptions": [],
-//     "tags":[]
-// }

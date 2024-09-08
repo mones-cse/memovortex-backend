@@ -37,6 +37,16 @@ const getCard = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const removeCard = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const cardId = req.params.id
+        const result = await cardService.removeCardService(cardId)
+        successResponse(res, 200, 'Card deleted successfully', cardId)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
 // const getDecks = async (req: Request, res: Response, next: NextFunction) => {
 //     try {
 //         const user = req.user as TUser
@@ -84,6 +94,7 @@ export default {
     createCard,
     getCards,
     getCard,
+    removeCard,
     // getDecks,
     // getDeck,
     // removeDeck,

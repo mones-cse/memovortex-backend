@@ -30,6 +30,11 @@ const getCardService = async (userId: string, cardId: string) => {
     return cards
 }
 
+const removeCardService = async (id: string) => {
+    const result = await cardRepository.removeCard(id)
+    return result
+}
+
 // const getDecksService = async (userId: string) => {
 //     const decks = await deckRepository.getDecks(userId)
 //     return decks
@@ -55,8 +60,6 @@ export default {
     createCardService,
     getCardsService,
     getCardService,
-    // getDecksService,
-    // getDeckService,
-    // removeDeckService,
+    removeCardService,
     // updateDeckService,
 }
