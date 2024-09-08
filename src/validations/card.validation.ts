@@ -16,3 +16,7 @@ export const cardsGetValidationSchema = z.object({
 })
 
 export const cardUpdateValidationSchema = cardCreateValidationSchema.partial().strict()
+
+export const cardReviewValidationSchema = z.object({
+    rating: z.number().int().min(0).max(4),
+})

@@ -24,3 +24,4 @@ export type TCardRepositoryCreateInput = BaseCard
 
 export type TCardServiceUpdateInput = Partial<TCardServiceCreateInput>
 export type TCardContentRepositoryUpdateInput = Partial<TCardContentRepositoryCreateInput>
+export type TCardRepositoryUpdateInput = Partial<TCardRepositoryCreateInput>

@@ -60,6 +60,18 @@ const updateCard = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const reviewCard = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user as TUser
+        const cardId = req.params.id
+        const rating = req.body.rating
+        const result = await cardService.reviewCardService(user.id, cardId, rating)
+        successResponse(res, 200, 'Card reviewed successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
 // const getDecks = async (req: Request, res: Response, next: NextFunction) => {
 //     try {
 //         const user = req.user as TUser
@@ -109,6 +121,7 @@ export default {
     getCard,
     removeCard,
     updateCard,
+    reviewCard,
     // getDecks,
     // getDeck,
     // removeDeck,

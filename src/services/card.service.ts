@@ -1,7 +1,5 @@
 import { TCardServiceCreateInput, TCardServiceUpdateInput } from '@src/types/card.types'
 import cardRepository from '@src/repositories/card.repository'
-
-import { TUser } from '@src/config/database'
 import ApiError from '@src/errors/ApiError'
 
 //todo: handle any
@@ -44,6 +42,30 @@ const updateCardService = async (userId: string, cardId: string, data: TCardServ
     return result
 }
 
+const reviewCardService = async (userId: string, cardId: string, rating: number) => {
+    const card = await cardRepository.getCard(cardId, userId)
+    if (card.length === 0) {
+        throw new ApiError(404, 'Card not found or you are not the owner')
+    }
+    //todo: from rating convert to reps, due, state, lastReview, elapsedDays, scheduledDays, difficulty, stability, lapses
+    // replace with actual values
+    const data = {
+        reps: card[0].card.reps + 1,
+        due: new Date(),
+        state: 'REVIEW',
+        lastReview: new Date(),
+        elapsedDays: 0,
+        scheduledDays: 0,
+        difficulty: 0,
+        stability: 0,
+        lapses: rating,
+    }
+    console.log('🚀 ~ reviewCardService ~ data:', data)
+
+    const result = await cardRepository.reviewCard(cardId, data)
+    return result
+}
+
 // const getDecksService = async (userId: string) => {
 //     const decks = await deckRepository.getDecks(userId)
 //     return decks
@@ -71,5 +93,6 @@ export default {
     getCardService,
     removeCardService,
     updateCardService,
+    reviewCardService,
     // updateDeckService,
 }

@@ -5,6 +5,7 @@ import {
     TCardContentRepositoryCreateInput,
     TCardRepositoryCreateInput,
     TCardContentRepositoryUpdateInput,
+    TCardRepositoryUpdateInput,
 } from '@src/types/card.types'
 import { cardContentSerializer, cardSerializer, cardsContentSerializer } from '@src/serializers/cardSerializer'
 import ApiError from '@src/errors/ApiError'
@@ -70,6 +71,14 @@ const updateCardContent = async (cardId: string, userId: string, data: TCardCont
     }
     return result
 }
+
+const reviewCard = async (cardId: string, data: TCardRepositoryUpdateInput) => {
+    const result = await db.update(CardTable).set(data).where(eq(CardTable.id, cardId)).returning(cardSerializer)
+    if (result.length === 0) {
+        throw new ApiError(404, 'Card not found')
+    }
+    return result
+}
 // // todo: handle deleted file
 // const getDecks = async (userId: string) => {
 //     return await db
@@ -113,5 +122,6 @@ export default {
     getCard,
     removeCard,
     updateCardContent,
+    reviewCard,
     //     updateDeck,
 }

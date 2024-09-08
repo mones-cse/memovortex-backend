@@ -2,6 +2,7 @@ import {
     cardCreateValidationSchema,
     cardsGetValidationSchema,
     cardUpdateValidationSchema,
+    cardReviewValidationSchema,
 } from '@src/validations/card.validation'
 import express from 'express'
 import isAuthentic from '../../middlewares/isAuthentic'
@@ -18,6 +19,7 @@ router.get('/', isAuthentic, validateData(cardsGetValidationSchema), cardControl
 router.get('/:id', isAuthentic, cardController.getCard)
 router.delete('/:id', isAuthentic, cardController.removeCard)
 router.patch('/:id', isAuthentic, validateData(cardUpdateValidationSchema), cardController.updateCard)
+router.patch('/review/:id', isAuthentic, validateData(cardReviewValidationSchema), cardController.reviewCard)
 // router.patch('/:id', isAuthentic, validateData(deckUpdateValidationSchema), deckController.updateDeck)
 // router.delete('/:id', isAuthentic, deckController.removeDeck)
 
