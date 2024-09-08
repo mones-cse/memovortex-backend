@@ -29,6 +29,23 @@ const getCards = async (deckId: string, userId: string) => {
     return result
 }
 
+const getCard = async (cardId: string, userId: string) => {
+    const card = db.$with('card').as(
+        db
+            .select()
+            .from(CardTable)
+            .where(and(eq(CardTable.createdBy, userId), eq(CardTable.id, cardId))),
+    )
+
+    const query = db
+        .with(card)
+        .select(cardsContentSerializer)
+        .from(card)
+        .innerJoin(CardContentTable, eq(CardContentTable.id, card.cardContentId))
+    const result = await query
+    return result
+}
+
 // // todo: handle deleted file
 // const getDecks = async (userId: string) => {
 //     return await db
@@ -78,6 +95,7 @@ export default {
     createCardContent,
     createCard,
     getCards,
+    getCard,
     //     getDecks,
     //     getDeck,
     //     removeDeck,

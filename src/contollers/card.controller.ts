@@ -19,7 +19,19 @@ const getCards = async (req: Request, res: Response, next: NextFunction) => {
         const user = req.user as TUser
         const deckId = req.body.deckId as string
         const result = await cardService.getCardsService(user.id, deckId)
-        successResponse(res, 200, 'Decks fetched successfully', result)
+        successResponse(res, 200, 'Cards fetched successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
+const getCard = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user as TUser
+        const cardId = req.params.id as string
+
+        const result = await cardService.getCardService(user.id, cardId)
+        successResponse(res, 200, 'Card fetched successfully', result)
     } catch (err: any) {
         next(err)
     }
@@ -71,6 +83,7 @@ const getCards = async (req: Request, res: Response, next: NextFunction) => {
 export default {
     createCard,
     getCards,
+    getCard,
     // getDecks,
     // getDeck,
     // removeDeck,
