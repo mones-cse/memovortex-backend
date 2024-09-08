@@ -87,10 +87,7 @@ export const CardTable = pgTable('card', {
     id: uuid('id').primaryKey().defaultRandom(),
     deckId: uuid('deck_id')
         .notNull()
-        .references(() => DeckTable.id),
-    cardContentId: uuid('card_content_id')
-        .notNull()
-        .references(() => CardContentTable.id),
+        .references(() => DeckTable.id, { onDelete: 'cascade' }),
     reps: integer('reps').notNull().default(0),
     due: timestamp('due').notNull().defaultNow(),
     state: varchar('state', { length: 50 }).notNull().default('NEW'),
@@ -112,6 +109,9 @@ export const CardTable = pgTable('card', {
 
 export const CardContentTable = pgTable('card_content', {
     id: uuid('id').primaryKey().defaultRandom(),
+    cardId: uuid('card_id')
+        .notNull()
+        .references(() => CardTable.id, { onDelete: 'cascade' }),
     frontText: text('front_text').notNull(),
     backText: text('back_text').notNull(),
     frontImageUrl: varchar('front_image_url', { length: 255 }).default(''),

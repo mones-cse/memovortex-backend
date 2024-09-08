@@ -21,16 +21,3 @@ type BaseCard = z.infer<typeof BaseInsertCardSchema>
 export type TCardContentRepositoryCreateInput = BaseCardContent
 export type TCardServiceCreateInput = Pick<BaseCard, 'deckId'> & BaseCardContent
 export type TCardRepositoryCreateInput = BaseCard
-
-// deckId: string;
-//     frontText: string;
-//     backText: string;
-//     id: string | undefined;
-//     frontImageUrl: string | null | undefined;
-//     backImageUrl: string | null | undefined;
-//     cardType: "BASIC" | "MULTIPLE_CHOICE" | undefined;
-//     multipleChoiceOptions: string[] | undefined;
-//     tags: string[] | undefined;
-//     createdAt: Date | null | undefined;
-//     updatedAt: Date | null | undefined;
-//     deletedAt: Date | null | undefined;

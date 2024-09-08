@@ -2,6 +2,7 @@ import { CardContentTable, CardTable } from '@src/schemas/schemas'
 
 export const cardContentSerializer = {
     id: CardContentTable.id,
+    cardId: CardContentTable.cardId,
     frontText: CardContentTable.frontText,
     backText: CardContentTable.backText,
     createdAt: CardContentTable.createdAt,
@@ -16,7 +17,6 @@ export const cardContentSerializer = {
 export const cardSerializer = {
     id: CardTable.id,
     deckId: CardTable.deckId,
-    cardContentId: CardTable.cardContentId,
     reps: CardTable.reps,
     due: CardTable.due,
     state: CardTable.state,
@@ -34,7 +34,6 @@ export const cardsContentSerializer = {
     card: {
         id: CardTable.id,
         deckId: CardTable.deckId,
-        cardContentId: CardTable.cardContentId,
         reps: CardTable.reps,
         due: CardTable.due,
         state: CardTable.reps,
@@ -49,6 +48,7 @@ export const cardsContentSerializer = {
     },
     cardContent: {
         id: CardContentTable.id,
+        cardId: CardContentTable.cardId,
         frontText: CardContentTable.frontText,
         backText: CardContentTable.backText,
         createdAt: CardContentTable.createdAt,

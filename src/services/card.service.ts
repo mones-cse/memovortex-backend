@@ -8,16 +8,16 @@ import ApiError from '@src/errors/ApiError'
 const createCardService = async (userId: string, data: TCardServiceCreateInput) => {
     try {
         const { deckId, ...cardContentData } = data
-        console.log('🚀 ~ createCardService ~ cardContentData:', cardContentData)
-        const cardContent = await cardRepository.createCardContent(cardContentData)
-        console.log('cardConten', cardContent)
         // todo use package to create card
-        const cardData = { deckId, cardContentId: cardContent[0]?.id, createdBy: userId }
-        const card = await cardRepository.createCard(cardData)
+        const card = await cardRepository.createCard({ deckId, createdBy: userId })
+
+        const cardContent = await cardRepository.createCardContent({
+            ...cardContentData,
+            cardId: card[0].id,
+        })
         return { ...card[0], cardContent: cardContent[0] }
     } catch (err) {
         console.log('🚀 ~ createCardService ~ err:', err)
-
         throw new ApiError(500, 'Internal Server Error')
     }
 }

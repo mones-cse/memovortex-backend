@@ -24,7 +24,7 @@ const getCards = async (deckId: string, userId: string) => {
         .with(card)
         .select(cardsContentSerializer)
         .from(card)
-        .innerJoin(CardContentTable, eq(CardContentTable.id, card.cardContentId))
+        .innerJoin(CardContentTable, eq(CardContentTable.cardId, card.id)) //todo
     const result = await query
     return result
 }
@@ -41,7 +41,7 @@ const getCard = async (cardId: string, userId: string) => {
         .with(card)
         .select(cardsContentSerializer)
         .from(card)
-        .innerJoin(CardContentTable, eq(CardContentTable.id, card.cardContentId))
+        .innerJoin(CardContentTable, eq(CardContentTable.cardId, card.id)) //todo
     const result = await query
     return result
 }
