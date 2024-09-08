@@ -1,7 +1,11 @@
 import { eq, and } from 'drizzle-orm'
 import { db } from '@src/config/database'
 import { CardContentTable, CardTable } from '@src/schemas/schemas'
-import { TCardContentRepositoryCreateInput, TCardRepositoryCreateInput } from '@src/types/card.types'
+import {
+    TCardContentRepositoryCreateInput,
+    TCardRepositoryCreateInput,
+    TCardContentRepositoryUpdateInput,
+} from '@src/types/card.types'
 import { cardContentSerializer, cardSerializer, cardsContentSerializer } from '@src/serializers/cardSerializer'
 import ApiError from '@src/errors/ApiError'
 
@@ -55,6 +59,17 @@ const removeCard = async (id: string) => {
     return result
 }
 
+const updateCardContent = async (cardId: string, userId: string, data: TCardContentRepositoryUpdateInput) => {
+    const result = await db
+        .update(CardContentTable)
+        .set(data)
+        .where(eq(CardContentTable.cardId, cardId))
+        .returning(cardContentSerializer)
+    if (result.length === 0) {
+        throw new ApiError(404, 'Card not found')
+    }
+    return result
+}
 // // todo: handle deleted file
 // const getDecks = async (userId: string) => {
 //     return await db
@@ -97,5 +112,6 @@ export default {
     getCards,
     getCard,
     removeCard,
+    updateCardContent,
     //     updateDeck,
 }

@@ -47,6 +47,18 @@ const removeCard = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const updateCard = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user as TUser
+        const cardId = req.params.id
+        const data = req.body
+        const result = await cardService.updateCardService(user.id, cardId, data)
+        successResponse(res, 200, 'Card updated successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
 // const getDecks = async (req: Request, res: Response, next: NextFunction) => {
 //     try {
 //         const user = req.user as TUser
@@ -95,6 +107,7 @@ export default {
     getCards,
     getCard,
     removeCard,
+    updateCard,
     // getDecks,
     // getDeck,
     // removeDeck,

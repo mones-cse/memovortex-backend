@@ -17,6 +17,7 @@ router.post('/', isAuthentic, validateData(cardCreateValidationSchema), cardCont
 router.get('/', isAuthentic, validateData(cardsGetValidationSchema), cardController.getCards)
 router.get('/:id', isAuthentic, cardController.getCard)
 router.delete('/:id', isAuthentic, cardController.removeCard)
+router.patch('/:id', isAuthentic, validateData(cardUpdateValidationSchema), cardController.updateCard)
 // router.patch('/:id', isAuthentic, validateData(deckUpdateValidationSchema), deckController.updateDeck)
 // router.delete('/:id', isAuthentic, deckController.removeDeck)
 

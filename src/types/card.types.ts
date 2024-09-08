@@ -21,3 +21,6 @@ type BaseCard = z.infer<typeof BaseInsertCardSchema>
 export type TCardContentRepositoryCreateInput = BaseCardContent
 export type TCardServiceCreateInput = Pick<BaseCard, 'deckId'> & BaseCardContent
 export type TCardRepositoryCreateInput = BaseCard
+
+export type TCardServiceUpdateInput = Partial<TCardServiceCreateInput>
+export type TCardContentRepositoryUpdateInput = Partial<TCardContentRepositoryCreateInput>

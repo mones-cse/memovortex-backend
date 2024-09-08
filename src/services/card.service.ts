@@ -1,4 +1,4 @@
-import { TCardServiceCreateInput } from '@src/types/card.types'
+import { TCardServiceCreateInput, TCardServiceUpdateInput } from '@src/types/card.types'
 import cardRepository from '@src/repositories/card.repository'
 
 import { TUser } from '@src/config/database'
@@ -35,6 +35,11 @@ const removeCardService = async (id: string) => {
     return result
 }
 
+const updateCardService = async (userId: string, cardId: string, data: TCardServiceUpdateInput) => {
+    const result = await cardRepository.updateCardContent(cardId, userId, data)
+    return result
+}
+
 // const getDecksService = async (userId: string) => {
 //     const decks = await deckRepository.getDecks(userId)
 //     return decks
@@ -61,5 +66,6 @@ export default {
     getCardsService,
     getCardService,
     removeCardService,
+    updateCardService,
     // updateDeckService,
 }
