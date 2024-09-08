@@ -1,4 +1,8 @@
-import { cardCreateValidationSchema, cardUpdateValidationSchema } from '@src/validations/card.validation'
+import {
+    cardCreateValidationSchema,
+    cardsGetValidationSchema,
+    cardUpdateValidationSchema,
+} from '@src/validations/card.validation'
 import express from 'express'
 import isAuthentic from '../../middlewares/isAuthentic'
 import validateData from '../../middlewares/validationMiddleware'
@@ -10,7 +14,7 @@ router.use((req, res, next) => {
     next()
 })
 router.post('/', isAuthentic, validateData(cardCreateValidationSchema), cardController.createCard)
-// router.get('/', isAuthentic, deckController.getDecks)
+router.get('/', isAuthentic, validateData(cardsGetValidationSchema), cardController.getCards)
 // router.get('/:id', isAuthentic, deckController.getDeck)
 // router.patch('/:id', isAuthentic, validateData(deckUpdateValidationSchema), deckController.updateDeck)
 // router.delete('/:id', isAuthentic, deckController.removeDeck)

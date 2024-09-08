@@ -105,6 +105,9 @@ export const CardTable = pgTable('card', {
     deletedAt: timestamp('deleted_at')
         .default(sql`NULL`)
         .$type<Date | null>(),
+    createdBy: uuid('created_by')
+        .notNull()
+        .references(() => UserTable.id),
 })
 
 export const CardContentTable = pgTable('card_content', {

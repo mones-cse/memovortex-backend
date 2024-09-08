@@ -1,9 +1,8 @@
-import { eq, desc, and } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
 import { db } from '@src/config/database'
 import { CardContentTable, CardTable } from '@src/schemas/schemas'
 import { TCardContentRepositoryCreateInput, TCardRepositoryCreateInput } from '@src/types/card.types'
-import { cardContentSerializer, cardSerializer } from '@src/serializers/cardSerializer'
-import ApiError from '@src/errors/ApiError'
+import { cardContentSerializer, cardSerializer, cardsContentSerializer } from '@src/serializers/cardSerializer'
 
 const createCardContent = async (cardContent: TCardContentRepositoryCreateInput) => {
     return await db.insert(CardContentTable).values(cardContent).returning(cardContentSerializer)
@@ -11,6 +10,23 @@ const createCardContent = async (cardContent: TCardContentRepositoryCreateInput)
 
 const createCard = async (card: TCardRepositoryCreateInput) => {
     return await db.insert(CardTable).values(card).returning(cardSerializer)
+}
+
+const getCards = async (deckId: string, userId: string) => {
+    const card = db.$with('card').as(
+        db
+            .select()
+            .from(CardTable)
+            .where(and(eq(CardTable.createdBy, userId), eq(CardTable.deckId, deckId))),
+    )
+
+    const query = db
+        .with(card)
+        .select(cardsContentSerializer)
+        .from(card)
+        .innerJoin(CardContentTable, eq(CardContentTable.id, card.cardContentId))
+    const result = await query
+    return result
 }
 
 // // todo: handle deleted file
@@ -61,6 +77,7 @@ const createCard = async (card: TCardRepositoryCreateInput) => {
 export default {
     createCardContent,
     createCard,
+    getCards,
     //     getDecks,
     //     getDeck,
     //     removeDeck,

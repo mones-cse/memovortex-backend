@@ -12,7 +12,7 @@ const createCardService = async (userId: string, data: TCardServiceCreateInput) 
         const cardContent = await cardRepository.createCardContent(cardContentData)
         console.log('cardConten', cardContent)
         // todo use package to create card
-        const cardData = { deckId, cardContentId: cardContent[0]?.id }
+        const cardData = { deckId, cardContentId: cardContent[0]?.id, createdBy: userId }
         const card = await cardRepository.createCard(cardData)
         return { ...card[0], cardContent: cardContent[0] }
     } catch (err) {
@@ -20,6 +20,10 @@ const createCardService = async (userId: string, data: TCardServiceCreateInput) 
 
         throw new ApiError(500, 'Internal Server Error')
     }
+}
+const getCardsService = async (userId: string, deckId: string) => {
+    const cards = await cardRepository.getCards(deckId, userId)
+    return cards
 }
 
 // const getDecksService = async (userId: string) => {
@@ -45,6 +49,7 @@ const createCardService = async (userId: string, data: TCardServiceCreateInput) 
 
 export default {
     createCardService,
+    getCardsService,
     // getDecksService,
     // getDeckService,
     // removeDeckService,

@@ -11,4 +11,8 @@ export const cardCreateValidationSchema = z.object({
     tags: z.array(z.string()).max(10).optional(),
 })
 
+export const cardsGetValidationSchema = z.object({
+    deckId: z.string().uuid(),
+})
+
 export const cardUpdateValidationSchema = cardCreateValidationSchema.partial().strict()

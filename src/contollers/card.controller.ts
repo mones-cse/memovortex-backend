@@ -14,6 +14,17 @@ const createCard = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const getCards = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user as TUser
+        const deckId = req.body.deckId as string
+        const result = await cardService.getCardsService(user.id, deckId)
+        successResponse(res, 200, 'Decks fetched successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
 // const getDecks = async (req: Request, res: Response, next: NextFunction) => {
 //     try {
 //         const user = req.user as TUser
@@ -59,6 +70,7 @@ const createCard = async (req: Request, res: Response, next: NextFunction) => {
 
 export default {
     createCard,
+    getCards,
     // getDecks,
     // getDeck,
     // removeDeck,
