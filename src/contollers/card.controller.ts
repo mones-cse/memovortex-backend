@@ -72,49 +72,6 @@ const reviewCard = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-// const getDecks = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const user = req.user as TUser
-//         const result = await deckService.getDecksService(user.id)
-//         successResponse(res, 200, 'Decks fetched successfully', result)
-//     } catch (err: any) {
-//         next(err)
-//     }
-// }
-
-// const getDeck = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const deckId = req.params.id
-//         const user = req.user as TUser
-//         const result = await deckService.getDeckService(deckId, user.id)
-//         successResponse(res, 200, 'Deck fetched successfully', result)
-//     } catch (err: any) {
-//         next(err)
-//     }
-// }
-
-// const removeDeck = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const id = req.params.id
-//         const result = await deckService.removeDeckService(id)
-//         successResponse(res, 200, 'Deck deleted successfully', id)
-//     } catch (err: any) {
-//         next(err)
-//     }
-// }
-
-// const updateDeck = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         const user = req.user as TUser
-//         const deckId = req.params.id
-//         const data = req.body
-//         const result = await deckService.updateDeckService(deckId, user.id, data)
-//         successResponse(res, 200, 'Deck updated successfully', result)
-//     } catch (err: any) {
-//         next(err)
-//     }
-// }
-
 export default {
     createCard,
     getCards,
@@ -122,8 +79,4 @@ export default {
     removeCard,
     updateCard,
     reviewCard,
-    // getDecks,
-    // getDeck,
-    // removeDeck,
-    // updateDeck,
 }

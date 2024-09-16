@@ -14,6 +14,5 @@ routerv1.use('/notes', noteRoute)
 routerv1.use('/documents', documentRoute)
 routerv1.use('/deck', deckRoute)
 routerv1.use('/card', cardRoute)
-// routerv2.use('path',anotherRouter)
 
 export { routerv1 }

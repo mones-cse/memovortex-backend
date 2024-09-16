@@ -39,7 +39,7 @@ export const getDocumentsWithParentID = async (parentId: string) => {
 export const deleteDocument = async (documentId: string) => {
     try {
         const result = await db.transaction(async (tx) => {
-            // The cascade will handle deleting child documents automatically
+            // Note: The cascade will handle deleting child documents automatically
             await tx.delete(DocumentTable).where(eq(DocumentTable.id, documentId))
         })
         console.log(`Document ${documentId} and its children deleted successfully`)
@@ -95,7 +95,6 @@ export const getParentsById = async (documentId: string) => {
     `
     const result = await db.execute(query)
 
-    // Transform the result to match the desired format
     const transformedData = result.rows.map((row) => ({
         id: row.id,
         fileName: row.file_name,

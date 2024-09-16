@@ -8,7 +8,7 @@ import ApiError from '@src/errors/ApiError'
 const createDeck = async (deck: TDeckRepositoryCreateInput) => {
     return await db.insert(DeckTable).values(deck).returning(deckSerializer)
 }
-// todo: handle deleted file
+
 const getDecks = async (userId: string) => {
     return await db
         .select(deckSerializer)
@@ -17,7 +17,6 @@ const getDecks = async (userId: string) => {
         .orderBy(desc(DeckTable.updatedAt))
 }
 
-// todo: handle deleted file
 const getDeck = async (deckId: string, userId: string) => {
     const deck = await db
         .select(deckSerializer)
@@ -31,7 +30,6 @@ const getDeck = async (deckId: string, userId: string) => {
     return deck
 }
 
-// todo: same way need to update noteRemove, document Remove code
 const removeDeck = async (id: string) => {
     const result = await db.delete(DeckTable).where(eq(DeckTable.id, id))
     if (result.rowCount === 0) {
@@ -40,7 +38,6 @@ const removeDeck = async (id: string) => {
     return result
 }
 
-// todo: same way need to update noteUpdate, document Update code
 const updateDeck = async (id: string, userId: string, data: TDeckReposirotyUpdateInput) => {
     const result = await db
         .update(DeckTable)

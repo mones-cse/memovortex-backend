@@ -2,7 +2,6 @@ import { TCardServiceCreateInput, TCardServiceUpdateInput } from '@src/types/car
 import cardRepository from '@src/repositories/card.repository'
 import ApiError from '@src/errors/ApiError'
 
-//todo: handle any
 const createCardService = async (userId: string, data: TCardServiceCreateInput) => {
     try {
         const { deckId, ...cardContentData } = data
@@ -66,27 +65,6 @@ const reviewCardService = async (userId: string, cardId: string, rating: number)
     return result
 }
 
-// const getDecksService = async (userId: string) => {
-//     const decks = await deckRepository.getDecks(userId)
-//     return decks
-// }
-
-// const getDeckService = async (deckId: string, userId: string) => {
-//     const deck = await deckRepository.getDeck(deckId, userId)
-//     return deck
-// }
-
-// const removeDeckService = async (id: string) => {
-//     const result = await deckRepository.removeDeck(id)
-//     return result
-// }
-
-// // todo change any type
-// const updateDeckService = async (deckId: string, userId: string, data: TDeckServiceUpdateInput) => {
-//     const result = await deckRepository.updateDeck(deckId, userId, data)
-//     return result
-// }
-
 export default {
     createCardService,
     getCardsService,
@@ -94,5 +72,4 @@ export default {
     removeCardService,
     updateCardService,
     reviewCardService,
-    // updateDeckService,
 }

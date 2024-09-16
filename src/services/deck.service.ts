@@ -2,7 +2,6 @@ import { TDeckServiceCreateInput, TDeckServiceUpdateInput } from '@src/types/dec
 import deckRepository from '@src/repositories/deck.repository'
 import { TUser } from '@src/config/database'
 
-//todo: handle any
 const createDeckService = async (userId: string, data: TDeckServiceCreateInput) => {
     const deck = { ...data, createdBy: userId }
     const response = await deckRepository.createDeck(deck)
@@ -24,7 +23,6 @@ const removeDeckService = async (id: string) => {
     return result
 }
 
-// todo change any type
 const updateDeckService = async (deckId: string, userId: string, data: TDeckServiceUpdateInput) => {
     const result = await deckRepository.updateDeck(deckId, userId, data)
     return result
