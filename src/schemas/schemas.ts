@@ -1,4 +1,15 @@
-import { pgTable, uuid, varchar, timestamp, boolean, text, bigint, AnyPgColumn, integer } from 'drizzle-orm/pg-core'
+import {
+    pgTable,
+    uuid,
+    varchar,
+    timestamp,
+    boolean,
+    text,
+    bigint,
+    AnyPgColumn,
+    integer,
+    doublePrecision,
+} from 'drizzle-orm/pg-core'
 import { sql } from 'drizzle-orm'
 
 export const UserTable = pgTable('user', {
@@ -90,12 +101,14 @@ export const CardTable = pgTable('card', {
         .references(() => DeckTable.id, { onDelete: 'cascade' }),
     reps: integer('reps').notNull().default(0),
     due: timestamp('due').notNull().defaultNow(),
-    state: varchar('state', { length: 50 }).notNull().default('NEW'),
-    lastReview: timestamp('last_review').notNull().defaultNow(),
+    state: integer('state').notNull().default(0),
+    lastReview: timestamp('last_review')
+        .default(sql`NULL`)
+        .$type<Date | null>(),
     elapsedDays: integer('elapsed_days').notNull().default(0),
     scheduledDays: integer('scheduled_days').notNull().default(0),
-    difficulty: integer('difficulty').notNull().default(0),
-    stability: integer('stability').notNull().default(0),
+    difficulty: doublePrecision('difficulty').notNull().default(0),
+    stability: doublePrecision('stability').notNull().default(0),
     lapses: integer('lapses').notNull().default(0),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),

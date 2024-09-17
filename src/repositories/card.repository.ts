@@ -38,7 +38,7 @@ const getCards = async (deckId: string, userId: string) => {
 const getCard = async (cardId: string, userId: string) => {
     const card = db.$with('card').as(
         db
-            .select()
+            .select(cardSerializer)
             .from(CardTable)
             .where(and(eq(CardTable.createdBy, userId), eq(CardTable.id, cardId))),
     )

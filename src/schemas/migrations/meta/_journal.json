@@ -134,6 +134,48 @@
             "when": 1725826222199,
             "tag": "0018_fat_clint_barton",
             "breakpoints": true
+        },
+        {
+            "idx": 19,
+            "version": "7",
+            "when": 1726472942010,
+            "tag": "0019_cool_iron_monger",
+            "breakpoints": true
+        },
+        {
+            "idx": 20,
+            "version": "7",
+            "when": 1726473495283,
+            "tag": "0020_warm_jocasta",
+            "breakpoints": true
+        },
+        {
+            "idx": 21,
+            "version": "7",
+            "when": 1726473523946,
+            "tag": "0021_colossal_falcon",
+            "breakpoints": true
+        },
+        {
+            "idx": 22,
+            "version": "7",
+            "when": 1726485559954,
+            "tag": "0022_stale_purifiers",
+            "breakpoints": true
+        },
+        {
+            "idx": 23,
+            "version": "7",
+            "when": 1726495650884,
+            "tag": "0023_aberrant_tyger_tiger",
+            "breakpoints": true
+        },
+        {
+            "idx": 24,
+            "version": "7",
+            "when": 1726575213302,
+            "tag": "0024_jazzy_risque",
+            "breakpoints": true
         }
     ]
 }
