@@ -3,6 +3,7 @@ import { createEmptyCard, fsrs, generatorParameters, Rating, Card } from 'ts-fsr
 import { TCardServiceCreateInput, TCardServiceUpdateInput } from '@src/types/card.types'
 import cardRepository from '@src/repositories/card.repository'
 import ApiError from '@src/errors/ApiError'
+import deckRepository from '@src/repositories/deck.repository'
 
 const params = generatorParameters({
     enable_fuzz: false,
@@ -34,8 +35,10 @@ const createCardService = async (userId: string, data: TCardServiceCreateInput) 
 }
 
 const getCardsService = async (userId: string, deckId: string) => {
+    const decks = await deckRepository.getDeck(deckId, userId)
+    const deck = decks[0]
     const cards = await cardRepository.getCards(deckId, userId)
-    return cards
+    return { deck, cards }
 }
 const getCardService = async (userId: string, cardId: string) => {
     const card = await cardRepository.getCard(cardId, userId)
