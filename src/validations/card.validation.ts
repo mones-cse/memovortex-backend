@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
 export const cardCreateValidationSchema = z.object({
-    deckId: z.string().uuid(),
     frontText: z.string().min(3, { message: 'front text must be at least 3 charcters long' }).max(1000),
     backText: z.string().min(3, { message: 'back text must be at least 3 charcters long' }).max(1000),
     frontImageUrl: z.string().url().optional(),

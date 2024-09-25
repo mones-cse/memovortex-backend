@@ -40,18 +40,18 @@ const getCardsService = async (userId: string, deckId: string) => {
     const cards = await cardRepository.getCards(deckId, userId)
     return { deck, cards }
 }
-const getCardService = async (userId: string, cardId: string) => {
-    const card = await cardRepository.getCard(cardId, userId)
+const getCardService = async (userId: string, deckId: string, cardId: string) => {
+    const card = await cardRepository.getCard(userId, deckId, cardId)
     return card
 }
 
-const removeCardService = async (id: string) => {
-    const result = await cardRepository.removeCard(id)
+const removeCardService = async (deckId: string, cardId: string) => {
+    const result = await cardRepository.removeCard(deckId, cardId)
     return result
 }
 
-const updateCardService = async (userId: string, cardId: string, data: TCardServiceUpdateInput) => {
-    const card = await cardRepository.getCard(cardId, userId)
+const updateCardService = async (userId: string, deckId: string, cardId: string, data: TCardServiceUpdateInput) => {
+    const card = await cardRepository.getCard(userId, deckId, cardId)
     if (card.length === 0) {
         throw new ApiError(404, 'Card not found or you are not the owner')
     }
@@ -83,8 +83,8 @@ const getScheduleCard = async (rating: number, scheduling_cards: any) => {
     }
 }
 
-const reviewCardService = async (userId: string, cardId: string, rating: number) => {
-    const [{ card: fetchedData } = { card: undefined }] = await cardRepository.getCard(cardId, userId)
+const reviewCardService = async (userId: string, deckId: string, cardId: string, rating: number) => {
+    const [{ card: fetchedData } = { card: undefined }] = await cardRepository.getCard(userId, deckId, cardId)
     if (!fetchedData) {
         throw new ApiError(404, 'Card not found or you are not the owner!')
     }

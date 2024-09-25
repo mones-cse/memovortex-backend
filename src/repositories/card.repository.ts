@@ -35,12 +35,12 @@ const getCards = async (deckId: string, userId: string) => {
     return result
 }
 
-const getCard = async (cardId: string, userId: string) => {
+const getCard = async (userId: string, deckId: string, cardId: string) => {
     const card = db.$with('card').as(
         db
             .select(cardSerializer)
             .from(CardTable)
-            .where(and(eq(CardTable.createdBy, userId), eq(CardTable.id, cardId))),
+            .where(and(eq(CardTable.createdBy, userId), eq(CardTable.deckId, deckId), eq(CardTable.id, cardId))),
     )
 
     const query = db
@@ -52,8 +52,8 @@ const getCard = async (cardId: string, userId: string) => {
     return result
 }
 
-const removeCard = async (id: string) => {
-    const result = await db.delete(CardTable).where(eq(CardTable.id, id))
+const removeCard = async (deckId: string, cardId: string) => {
+    const result = await db.delete(CardTable).where(and(eq(CardTable.id, cardId), eq(CardTable.deckId, deckId)))
     if (result.rowCount === 0) {
         throw new ApiError(404, 'Card not found')
     }

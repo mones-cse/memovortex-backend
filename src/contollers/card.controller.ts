@@ -6,8 +6,14 @@ import ApiError from '@src/errors/ApiError'
 
 const createCard = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const { deckId } = req.params
+        if (!deckId) {
+            throw new ApiError(400, 'Deck ID is required')
+        }
         const user = req.user as TUser
-        const data = req.body
+        let data = req.body
+        data = { ...data, deckId }
+
         const result = await cardService.createCardService(user.id, data)
         successResponse(res, 200, 'New Deck created successfully', result)
     } catch (err: any) {
@@ -18,7 +24,7 @@ const createCard = async (req: Request, res: Response, next: NextFunction) => {
 const getCards = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user as TUser
-        const deckId = req.body.deckId as string
+        const { deckId } = req.params
         const result = await cardService.getCardsService(user.id, deckId)
         successResponse(res, 200, 'Cards fetched successfully', result)
     } catch (err: any) {
@@ -29,9 +35,8 @@ const getCards = async (req: Request, res: Response, next: NextFunction) => {
 const getCard = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user as TUser
-        const cardId = req.params.id as string
-
-        const result = await cardService.getCardService(user.id, cardId)
+        const { deckId, cardId } = req.params
+        const result = await cardService.getCardService(user.id, deckId, cardId)
         successResponse(res, 200, 'Card fetched successfully', result)
     } catch (err: any) {
         next(err)
@@ -40,8 +45,8 @@ const getCard = async (req: Request, res: Response, next: NextFunction) => {
 
 const removeCard = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const cardId = req.params.id
-        const result = await cardService.removeCardService(cardId)
+        const { deckId, cardId } = req.params
+        const result = await cardService.removeCardService(deckId, cardId)
         successResponse(res, 200, 'Card deleted successfully', cardId)
     } catch (err: any) {
         next(err)
@@ -51,9 +56,9 @@ const removeCard = async (req: Request, res: Response, next: NextFunction) => {
 const updateCard = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user as TUser
-        const cardId = req.params.id
+        const { cardId, deckId } = req.params
         const data = req.body
-        const result = await cardService.updateCardService(user.id, cardId, data)
+        const result = await cardService.updateCardService(user.id, deckId, cardId, data)
         successResponse(res, 200, 'Card updated successfully', result)
     } catch (err: any) {
         next(err)
@@ -63,9 +68,9 @@ const updateCard = async (req: Request, res: Response, next: NextFunction) => {
 const reviewCard = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user as TUser
-        const cardId = req.params.id
+        const { deckId, cardId } = req.params
         const rating = req.body.rating
-        const result = await cardService.reviewCardService(user.id, cardId, rating)
+        const result = await cardService.reviewCardService(user.id, deckId, cardId, rating)
         successResponse(res, 200, 'Card reviewed successfully', result)
     } catch (err: any) {
         next(err)
