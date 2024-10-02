@@ -176,6 +176,20 @@
             "when": 1726575213302,
             "tag": "0024_jazzy_risque",
             "breakpoints": true
+        },
+        {
+            "idx": 25,
+            "version": "7",
+            "when": 1727872537924,
+            "tag": "0025_free_cassandra_nova",
+            "breakpoints": true
+        },
+        {
+            "idx": 26,
+            "version": "7",
+            "when": 1727873450315,
+            "tag": "0026_past_electro",
+            "breakpoints": true
         }
     ]
 }

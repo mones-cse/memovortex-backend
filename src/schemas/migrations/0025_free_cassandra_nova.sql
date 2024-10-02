@@ -1,0 +1,1 @@
+ALTER TABLE "deck" ADD COLUMN "state" integer DEFAULT 0 NOT NULL;

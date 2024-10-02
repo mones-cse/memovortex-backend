@@ -92,6 +92,10 @@ export const DeckTable = pgTable('deck', {
     deletedAt: timestamp('deleted_at')
         .default(sql`NULL`)
         .$type<Date | null>(),
+    stateNew: integer('state_new').notNull().default(0),
+    stateLearning: integer('state_learning').notNull().default(0),
+    stateReview: integer('state_review').notNull().default(0),
+    stateRelearning: integer('state_relearning').notNull().default(0),
 })
 
 export const CardTable = pgTable('card', {
