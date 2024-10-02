@@ -47,6 +47,7 @@ const getCardService = async (userId: string, deckId: string, cardId: string) =>
 
 const removeCardService = async (deckId: string, cardId: string) => {
     const result = await cardRepository.removeCard(deckId, cardId)
+    await cardRepository.updateDeckSummaryState(deckId)
     return result
 }
 
@@ -93,6 +94,7 @@ const reviewCardService = async (userId: string, deckId: string, cardId: string,
     const nextSchedule = await getScheduleCard(rating, scheduling_cards)
     const camleCaseCardData = fromSnakeCaseToCamelCase(nextSchedule)
     const resultFromDatabase = await cardRepository.reviewCard(cardId, camleCaseCardData)
+    await cardRepository.updateDeckSummaryState(deckId)
     return resultFromDatabase[0]
 }
 

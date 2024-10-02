@@ -1,6 +1,6 @@
-import { eq, and } from 'drizzle-orm'
+import { eq, and, count, sql } from 'drizzle-orm'
 import { db } from '@src/config/database'
-import { CardContentTable, CardTable } from '@src/schemas/schemas'
+import { CardContentTable, CardTable, DeckTable } from '@src/schemas/schemas'
 import {
     TCardContentRepositoryCreateInput,
     TCardRepositoryCreateInput,
@@ -80,6 +80,49 @@ const reviewCard = async (cardId: string, data: TCardRepositoryUpdateInput) => {
     return result
 }
 
+const updateDeckSummaryState = async (deckId: string) => {
+    const states = await db
+        .select({
+            state: CardTable.state,
+            count: sql`COUNT(${CardTable.id})`,
+        })
+        .from(CardTable)
+        .where(eq(CardTable.deckId, deckId))
+        .groupBy(CardTable.state)
+
+    if (states.length === 0) {
+        throw new ApiError(404, 'No cards found for this deck')
+    }
+
+    const stateMap = {
+        stateNew: 0,
+        stateLearning: 0,
+        stateReview: 0,
+        stateRelearning: 0,
+    }
+
+    for (const { state, count } of states) {
+        switch (state) {
+            case 0:
+                stateMap.stateNew = Number(count)
+                break
+            case 1:
+                stateMap.stateLearning = Number(count)
+                break
+            case 2:
+                stateMap.stateReview = Number(count)
+                break
+            case 3:
+                stateMap.stateRelearning = Number(count)
+                break
+            default:
+                console.warn(`Unexpected state encountered: ${state}`)
+        }
+    }
+    const result = await db.update(DeckTable).set(stateMap).where(eq(DeckTable.id, deckId))
+    return result
+}
+
 export default {
     createCardContent,
     createCard,
@@ -88,4 +131,5 @@ export default {
     removeCard,
     updateCardContent,
     reviewCard,
+    updateDeckSummaryState,
 }
