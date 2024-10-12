@@ -60,3 +60,23 @@ export const cardsContentSerializer = {
         tags: CardContentTable.tags,
     },
 }
+
+export const cardsContentForReviewSerializer = {
+    card: {
+        id: CardTable.id,
+        deckId: CardTable.deckId,
+        due: CardTable.due,
+        state: CardTable.state,
+        createdAt: CardTable.createdAt,
+    },
+    cardContent: {
+        id: CardContentTable.id,
+        cardId: CardContentTable.cardId,
+        frontText: CardContentTable.frontText,
+        backText: CardContentTable.backText,
+        frontImageUrl: CardContentTable.frontImageUrl,
+        backImageUrl: CardContentTable.backImageUrl,
+        cardType: CardContentTable.cardType,
+        multipleChoiceOptions: CardContentTable.multipleChoiceOptions,
+    },
+}

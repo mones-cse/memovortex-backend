@@ -1,4 +1,4 @@
-import { eq, and, count, sql } from 'drizzle-orm'
+import { eq, and, count, sql, lte } from 'drizzle-orm'
 import { db } from '@src/config/database'
 import { CardContentTable, CardTable, DeckTable } from '@src/schemas/schemas'
 import {
@@ -7,7 +7,12 @@ import {
     TCardContentRepositoryUpdateInput,
     TCardRepositoryUpdateInput,
 } from '@src/types/card.types'
-import { cardContentSerializer, cardSerializer, cardsContentSerializer } from '@src/serializers/cardSerializer'
+import {
+    cardContentSerializer,
+    cardSerializer,
+    cardsContentForReviewSerializer,
+    cardsContentSerializer,
+} from '@src/serializers/cardSerializer'
 import ApiError from '@src/errors/ApiError'
 
 const createCardContent = async (cardContent: TCardContentRepositoryCreateInput) => {
@@ -123,6 +128,24 @@ const updateDeckSummaryState = async (deckId: string) => {
     return result
 }
 
+const getCardsForReview = async (userId: string, deckId: string) => {
+    const card = db.$with('card').as(
+        db
+            .select()
+            .from(CardTable)
+            .where(and(eq(CardTable.createdBy, userId), eq(CardTable.deckId, deckId))),
+    )
+
+    const query = db
+        .with(card)
+        .select(cardsContentForReviewSerializer)
+        .from(card)
+        .innerJoin(CardContentTable, eq(CardContentTable.cardId, card.id))
+        .where(lte(CardTable.due, new Date()))
+    const result = await query
+    return result
+}
+
 export default {
     createCardContent,
     createCard,
@@ -132,4 +155,5 @@ export default {
     updateCardContent,
     reviewCard,
     updateDeckSummaryState,
+    getCardsForReview,
 }

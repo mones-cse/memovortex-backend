@@ -98,6 +98,11 @@ const reviewCardService = async (userId: string, deckId: string, cardId: string,
     return resultFromDatabase[0]
 }
 
+const getCardsForReviewService = async (userId: string, deckId: string) => {
+    const cards = await cardRepository.getCardsForReview(userId, deckId)
+    return cards
+}
+
 export default {
     createCardService,
     getCardsService,
@@ -105,4 +110,5 @@ export default {
     removeCardService,
     updateCardService,
     reviewCardService,
+    getCardsForReviewService,
 }

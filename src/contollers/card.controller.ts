@@ -77,6 +77,17 @@ const reviewCard = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const getCardsForReview = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user as TUser
+        const { deckId } = req.params
+        const result = await cardService.getCardsForReviewService(user.id, deckId)
+        successResponse(res, 200, 'Cards fetched successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
+
 export default {
     createCard,
     getCards,
@@ -84,4 +95,5 @@ export default {
     removeCard,
     updateCard,
     reviewCard,
+    getCardsForReview,
 }
