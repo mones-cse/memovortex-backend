@@ -4,3 +4,4 @@ dist
 .vscode
 .DS_Store
 db_data
+__db_query__/
