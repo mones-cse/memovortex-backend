@@ -12,8 +12,8 @@ type TSelectedUser = z.infer<typeof SelectedUserSchema>
 const serializedUserSchema = SelectedUserSchema.pick({
     id: true,
     email: true,
-    full_name: true,
-    is_active: true,
+    fullName: true,
+    isActive: true,
 })
 
 // Serialized user type (for API responses) with only the necessary fields

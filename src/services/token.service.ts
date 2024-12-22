@@ -1,15 +1,15 @@
-import { TUser } from 'config/database'
+import { TUser } from '@src/config/database'
 import jwt from 'jsonwebtoken'
 import env from '../config/env'
 import crypto from 'crypto'
 
 export const issueJWT = async (user: TUser) => {
-    const expiresIn = '1h' // 1000ms * 60s * 60m * 24h  = 1 days
+    const expiresIn = '6h' // 1000ms * 60s * 60m * 24h  = 1 days
 
     const payload = {
         sub: user.id,
         email: user.email,
-        full_name: user.full_name,
+        fullName: user.fullName,
         iat: Math.floor(Date.now() / 1000),
     }
     const signedToken = await jwt.sign(payload, env.PRIVATE_KEY, {

@@ -26,3 +26,4 @@
 -   [ ] remove refresh token from db on logout
 -   [ ] remove refresh token from db on password change
 -   [ ] remove refresh token when expire
+-   [ ] need to structure types properly

@@ -1,5 +1,8 @@
 import express from 'express'
 import isAuthentic from '../../middlewares/isAuthentic'
+import validateData from '../../middlewares/validationMiddleware'
+import { userAccountInfoSchema } from '../../validations/user.validation'
+import userController from '@src/contollers/user.controller'
 const router = express.Router()
 
 router.use((req, res, next) => {
@@ -13,13 +16,12 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
     res.send('list of all user get method')
 })
-router.get('/protected', isAuthentic, (req, res) => {
-    res.send('Protected page')
+
+router.get('/profile', isAuthentic, (req, res) => {
+    res.send(JSON.stringify(req.user))
 })
-router.get('/me', isAuthentic, (req, res) => {
-    console.log({ res })
-    res.send('get a user by id get method')
-})
+
+router.patch('/profile', isAuthentic, validateData(userAccountInfoSchema), userController.updateUserAccountInfo)
 
 router.get('/:userId', (req, res) => {
     res.send('get a user by id get method')

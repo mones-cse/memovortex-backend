@@ -1,0 +1,1 @@
+ALTER TABLE "card_content" ADD COLUMN "tags" text[] DEFAULT '{}'::text[];

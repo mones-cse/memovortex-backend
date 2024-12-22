@@ -1,0 +1,1 @@
+ALTER TABLE "card_content" ADD COLUMN "multiple_choice_options" text[] DEFAULT '{}'::text[];

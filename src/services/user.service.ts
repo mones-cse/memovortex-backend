@@ -1,12 +1,10 @@
-import { Request } from 'express'
-import { DB_ERRORS, DatabaseError, TNewUser } from '../config/database'
-import { createUser, getUserByEmail } from '../repositories/user.repository'
-import { createSession } from '../repositories/session.repository'
-import { passowrdGenerator, passwordCompare } from '../utils/bcrypt'
-import { tokenService } from './index'
+import { TNewUser } from '../config/database'
+import { createUser, getUserByEmail, updateUser } from '../repositories/user.repository'
+import { passowrdGenerator } from '../utils/bcrypt'
 import ApiError from '../errors/ApiError'
-import { TInsertSession } from 'types/session.types'
 import { serializeUser } from '../serializers/userSerializer'
+import { TUser } from '@src/config/database'
+import { UserAccountInfo } from '@src/types/user.types'
 
 export const createUserService = async (user: TNewUser) => {
     const existingUser = await getUserByEmail(user.email)
@@ -14,8 +12,14 @@ export const createUserService = async (user: TNewUser) => {
         throw new ApiError(409, 'Email already exists')
     }
 
-    const hashedPassword = await passowrdGenerator(user.password_hash)
-    const createtdUser = await createUser({ ...user, password_hash: hashedPassword })
+    const hashedPassword = await passowrdGenerator(user.password)
+    const createtdUser = await createUser({ ...user, password: hashedPassword })
     const serializedUser = serializeUser(createtdUser[0])
+    return serializedUser
+}
+
+export const updateUserAcountInfoService = async (user: TUser, data: UserAccountInfo) => {
+    const updatedUser = await updateUser(user.id, data)
+    const serializedUser = serializeUser(updatedUser[0])
     return serializedUser
 }

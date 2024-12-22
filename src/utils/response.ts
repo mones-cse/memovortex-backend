@@ -14,6 +14,11 @@ export const successResponse = (res: Response, statusCode = StatusCodes.OK, mess
         message,
         data,
     }
+    BigInt.prototype.toJSON = function () {
+        return this.toString()
+    }
+    console.log('🚀 ~ successResponse ~ response:', response)
+
     res.status(statusCode).json(response)
 }
 

@@ -5,3 +5,6 @@ dist
 .DS_Store
 db_data
 __db_query__/
+__wiki__/
+__wiki__/__todo__.md
+__wiki__/_note_.md

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { userService, authService } from '../services/index'
 import { successResponse } from '../utils/response'
-import { TUser } from 'config/database'
-import { changePasswordService } from '../services/auth.service'
+import { TUser } from '@src/config/database'
+import { changePasswordService } from '@src/services/auth.service'
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
     try {
