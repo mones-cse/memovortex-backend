@@ -40,6 +40,23 @@ const getCards = async (deckId: string, userId: string) => {
     return result
 }
 
+const getStudyCards = async (deckId: string, userId: string) => {
+    const card = db.$with('card').as(
+        db
+            .select()
+            .from(CardTable)
+            .where(and(eq(CardTable.createdBy, userId), eq(CardTable.deckId, deckId), lte(CardTable.due, new Date()))),
+    )
+
+    const query = db
+        .with(card)
+        .select(cardsContentSerializer)
+        .from(card)
+        .innerJoin(CardContentTable, eq(CardContentTable.cardId, card.id))
+    const result = await query
+    return result
+}
+
 const getCard = async (userId: string, deckId: string, cardId: string) => {
     const card = db.$with('card').as(
         db
@@ -156,4 +173,5 @@ export default {
     reviewCard,
     updateDeckSummaryState,
     getCardsForReview,
+    getStudyCards,
 }

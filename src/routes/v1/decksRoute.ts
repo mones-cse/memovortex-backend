@@ -37,4 +37,6 @@ router.get('/:deckId/cards/:cardId', isAuthentic, cardController.getCard)
 router.patch('/:deckId/cards/:cardId', isAuthentic, validateData(cardUpdateValidationSchema), cardController.updateCard)
 router.delete('/:deckId/cards/:cardId', isAuthentic, cardController.removeCard)
 
+// Studies
+router.get('/:deckId/studies', isAuthentic, cardController.getStudyCards)
 export default router

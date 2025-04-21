@@ -41,6 +41,14 @@ const getCardsService = async (userId: string, deckId: string) => {
     const cards = await cardRepository.getCards(deckId, userId)
     return { deck, cards }
 }
+// TODO check if I need to fetch deck data
+const getStudyCardsService = async (userId: string, deckId: string) => {
+    const decks = await deckRepository.getDeck(deckId, userId)
+    const deck = decks[0]
+    const cards = await cardRepository.getStudyCards(deckId, userId)
+    return { deck, cards }
+}
+
 const getCardService = async (userId: string, deckId: string, cardId: string) => {
     const card = await cardRepository.getCard(userId, deckId, cardId)
     return card
@@ -91,7 +99,9 @@ const reviewCardService = async (userId: string, deckId: string, cardId: string,
         throw new ApiError(404, 'Card not found or you are not the owner!')
     }
     const snakeCaseCardData = fromCamleCaseToSnakeCase(fetchedData)
-    const scheduling_cards = f.repeat(snakeCaseCardData, snakeCaseCardData.due)
+    // check
+    // const scheduling_cards = f.repeat(snakeCaseCardData, snakeCaseCardData.due)
+    const scheduling_cards = f.repeat(snakeCaseCardData, new Date())
     const nextSchedule = await getScheduleCard(rating, scheduling_cards)
     const camleCaseCardData = fromSnakeCaseToCamelCase(nextSchedule)
     const resultFromDatabase = await cardRepository.reviewCard(cardId, camleCaseCardData)
@@ -112,4 +122,5 @@ export default {
     updateCardService,
     reviewCardService,
     getCardsForReviewService,
+    getStudyCardsService,
 }

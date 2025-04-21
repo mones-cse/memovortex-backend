@@ -31,6 +31,16 @@ const getCards = async (req: Request, res: Response, next: NextFunction) => {
         next(err)
     }
 }
+const getStudyCards = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = req.user as TUser
+        const { deckId } = req.params
+        const result = await cardService.getStudyCardsService(user.id, deckId)
+        successResponse(res, 200, 'Cards fetched successfully', result)
+    } catch (err: any) {
+        next(err)
+    }
+}
 
 const getCard = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -96,4 +106,5 @@ export default {
     updateCard,
     reviewCard,
     getCardsForReview,
+    getStudyCards,
 }
