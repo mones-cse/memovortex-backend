@@ -27,6 +27,7 @@ const createCardService = async (userId: string, data: TCardServiceCreateInput) 
             ...cardContentData,
             cardId: card[0].id,
         })
+        await cardRepository.updateDeckSummaryState(deckId)
         return { ...card[0], cardContent: cardContent[0] }
     } catch (err) {
         console.log('🚀 ~ createCardService ~ err:', err)
