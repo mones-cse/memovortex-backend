@@ -45,7 +45,13 @@ const getStudyCards = async (deckId: string, userId: string) => {
         db
             .select()
             .from(CardTable)
-            .where(and(eq(CardTable.createdBy, userId), eq(CardTable.deckId, deckId), lte(CardTable.due, new Date()))),
+            .where(
+                and(
+                    eq(CardTable.createdBy, userId),
+                    eq(CardTable.deckId, deckId),
+                    lte(sql`DATE(${CardTable.due})`, sql`CURRENT_DATE`),
+                ),
+            ),
     )
 
     const query = db
