@@ -108,7 +108,7 @@ const reviewCard = async (cardId: string, data: TCardRepositoryUpdateInput) => {
     return result
 }
 
-const updateDeckSummaryState = async (deckId: string) => {
+const updateDeckSummaryStates = async (deckId: string) => {
     const states = await db
         .select({
             state: CardTable.state,
@@ -151,6 +151,22 @@ const updateDeckSummaryState = async (deckId: string) => {
     return result
 }
 
+const updateDeckSummaryStateWithNewCard = async (deckId: string) => {
+    const result = await db
+        .update(DeckTable)
+        .set({
+            stateNew: sql`${DeckTable.stateNew} + 1`,
+        })
+        .where(eq(DeckTable.id, deckId))
+        .returning()
+
+    if (result.length === 0) {
+        throw new ApiError(404, 'Deck not found')
+    }
+
+    return result[0]
+}
+
 const getCardsForReview = async (userId: string, deckId: string) => {
     const card = db.$with('card').as(
         db
@@ -177,7 +193,8 @@ export default {
     removeCard,
     updateCardContent,
     reviewCard,
-    updateDeckSummaryState,
+    updateDeckSummaryStates,
+    updateDeckSummaryStateWithNewCard,
     getCardsForReview,
     getStudyCards,
 }

@@ -27,7 +27,7 @@ const createCardService = async (userId: string, data: TCardServiceCreateInput) 
             ...cardContentData,
             cardId: card[0].id,
         })
-        await cardRepository.updateDeckSummaryState(deckId)
+        await cardRepository.updateDeckSummaryStateWithNewCard(deckId)
         return { ...card[0], cardContent: cardContent[0] }
     } catch (err) {
         console.log('🚀 ~ createCardService ~ err:', err)
@@ -56,7 +56,7 @@ const getCardService = async (userId: string, deckId: string, cardId: string) =>
 
 const removeCardService = async (deckId: string, cardId: string) => {
     const result = await cardRepository.removeCard(deckId, cardId)
-    await cardRepository.updateDeckSummaryState(deckId)
+    await cardRepository.updateDeckSummaryStates(deckId)
     return result
 }
 
@@ -105,7 +105,7 @@ const reviewCardService = async (userId: string, deckId: string, cardId: string,
     const nextSchedule = await getScheduleCard(rating, scheduling_cards)
     const camleCaseCardData = fromSnakeCaseToCamelCase(nextSchedule)
     const resultFromDatabase = await cardRepository.reviewCard(cardId, camleCaseCardData)
-    await cardRepository.updateDeckSummaryState(deckId)
+    await cardRepository.updateDeckSummaryStates(deckId)
     return resultFromDatabase[0]
 }
 
